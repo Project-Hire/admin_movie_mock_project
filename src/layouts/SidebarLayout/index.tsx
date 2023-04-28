@@ -1,16 +1,24 @@
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, useEffect } from 'react';
 import { Box, alpha, lighten, useTheme } from '@mui/material';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 import Sidebar from './Sidebar';
 import Header from './Header';
+import { isLogin } from 'src/utils/api/auth';
 
 interface SidebarLayoutProps {
   children?: ReactNode;
 }
 
 const SidebarLayout: FC<SidebarLayoutProps> = () => {
+  const navigate = useNavigate();
   const theme = useTheme();
+
+  useEffect(() => {
+    if (!isLogin()) {
+      navigate('/login');
+    }
+  }, []);
 
   return (
     <>

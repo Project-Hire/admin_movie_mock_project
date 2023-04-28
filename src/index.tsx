@@ -6,14 +6,19 @@ import 'nprogress/nprogress.css';
 import App from 'src/App';
 import { SidebarProvider } from 'src/contexts/SidebarContext';
 import * as serviceWorker from 'src/serviceWorker';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 ReactDOM.render(
   <HelmetProvider>
-    <SidebarProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </SidebarProvider>
+    <QueryClientProvider client={queryClient}>
+      <SidebarProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </SidebarProvider>
+    </QueryClientProvider>
   </HelmetProvider>,
   document.getElementById('root')
 );

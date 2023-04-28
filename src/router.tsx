@@ -27,15 +27,17 @@ const Crypto = Loader(lazy(() => import('src/content/dashboards/Crypto')));
 const Messenger = Loader(
   lazy(() => import('src/content/applications/Messenger'))
 );
-const Transactions = Loader(
-  lazy(() => import('src/content/applications/Transactions'))
+const Movie = Loader(lazy(() => import('src/content/applications/Movie')));
+const Category = Loader(
+  lazy(() => import('src/content/applications/Category'))
 );
-const UserProfile = Loader(
-  lazy(() => import('src/content/applications/Users/profile'))
+const Actor = Loader(lazy(() => import('src/content/applications/Actor')));
+
+const CreateCategoryPage = Loader(
+  lazy(() => import('src/content/create/CreateCategory'))
 );
-const UserSettings = Loader(
-  lazy(() => import('src/content/applications/Users/settings'))
-);
+
+const LoginPage = Loader(lazy(() => import('src/content/pages/Auth/Login')));
 
 // Components
 
@@ -83,7 +85,11 @@ const routes: RouteObject[] = [
     children: [
       {
         path: '/',
-        element: <Overview />
+        element: <Navigate to="/management/category" replace />
+      },
+      {
+        path: 'login',
+        element: <LoginPage />
       },
       {
         path: 'overview',
@@ -144,28 +150,33 @@ const routes: RouteObject[] = [
     children: [
       {
         path: '',
-        element: <Navigate to="transactions" replace />
+        element: <Navigate to="movie" replace />
       },
       {
-        path: 'transactions',
-        element: <Transactions />
+        path: 'movie',
+        element: <Movie />
       },
       {
-        path: 'profile',
-        children: [
-          {
-            path: '',
-            element: <Navigate to="details" replace />
-          },
-          {
-            path: 'details',
-            element: <UserProfile />
-          },
-          {
-            path: 'settings',
-            element: <UserSettings />
-          }
-        ]
+        path: 'category',
+        element: <Category />
+      },
+      {
+        path: 'actor',
+        element: <Actor />
+      }
+    ]
+  },
+  {
+    path: 'create',
+    element: <SidebarLayout />,
+    children: [
+      {
+        path: '',
+        element: <Navigate to="category" replace />
+      },
+      {
+        path: 'category',
+        element: <CreateCategoryPage />
       }
     ]
   },
