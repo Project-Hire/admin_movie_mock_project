@@ -15,6 +15,10 @@ import { styled } from '@mui/material/styles';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
 
+interface Props {
+  selectedCategoryOrders: string[];
+}
+
 const ButtonError = styled(Button)(
   ({ theme }) => `
      background: ${theme.colors.error.main};
@@ -26,7 +30,7 @@ const ButtonError = styled(Button)(
     `
 );
 
-function BulkActions() {
+function BulkActions({ selectedCategoryOrders }: Props) {
   const [onMenuOpen, menuOpen] = useState<boolean>(false);
   const moreRef = useRef<HTMLButtonElement | null>(null);
 
@@ -36,6 +40,10 @@ function BulkActions() {
 
   const closeMenu = (): void => {
     menuOpen(false);
+  };
+
+  const handleDelete = () => {
+    console.log(selectedCategoryOrders);
   };
 
   return (
@@ -49,6 +57,7 @@ function BulkActions() {
             sx={{ ml: 1 }}
             startIcon={<DeleteTwoToneIcon />}
             variant="contained"
+            onClick={handleDelete}
           >
             Delete
           </ButtonError>

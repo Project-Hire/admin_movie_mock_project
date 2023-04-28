@@ -30,10 +30,14 @@ import { CryptoOrder, CryptoOrderStatus } from 'src/models/crypto_order';
 import {
   ICategoryListDataResponse,
   ICategoryListData
-} from 'src/models/api/category';
+} from 'src/models/api/category.interface';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import BulkActions from './BulkActions';
+import { IDataOpenAlert, useStatusAlert } from 'src/stores/useStatusAlert';
+import { deleteCategory } from 'src/utils/api/category';
+import { useQueryClient } from '@tanstack/react-query';
+import { QUERY_KEYS } from 'src/models/key';
 
 interface CategoryTableProps {
   className?: string;
@@ -42,6 +46,10 @@ interface CategoryTableProps {
 interface ICategoryTableProps {
   className?: string;
   categoryOrders: ICategoryListData[];
+  page: number;
+  limit: number;
+  handlePageChange: (event: any, newPage: number) => void;
+  handleLimitChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const applyPagination = (
@@ -60,14 +68,21 @@ const applyCatePagination = (
   return categoryOrders.slice(page * limit, page * limit + limit);
 };
 
-const RecentOrdersTable: FC<ICategoryTableProps> = ({ categoryOrders }) => {
+const RecentOrdersTable: FC<ICategoryTableProps> = ({
+  categoryOrders,
+  page,
+  limit,
+  handleLimitChange,
+  handlePageChange
+}) => {
+  const queryClient = useQueryClient();
+  const [update] = useStatusAlert((state: IDataOpenAlert) => [state.update]);
+
   const [selectedCategoryOrders, setSelectedCategoryOrders] = useState<
     string[]
   >([]);
+
   const selectedBulkActions = selectedCategoryOrders.length > 0;
-  const [page, setPage] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(5);
-  const [keyword, setKeyword] = useState<string>('');
 
   const handleSelectAllCryptoOrders = (
     event: ChangeEvent<HTMLInputElement>
@@ -95,12 +110,24 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({ categoryOrders }) => {
     }
   };
 
-  const handlePageChange = (event: any, newPage: number): void => {
-    setPage(newPage);
-  };
+  const handleDeleteCategory = async (id: string) => {
+    try {
+      await deleteCategory({ id, accessToken: 'abc' });
 
-  const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setLimit(parseInt(event.target.value));
+      queryClient.invalidateQueries([QUERY_KEYS.CATEGORY_LIST]);
+
+      update({
+        message: `Delete Category Successfully`,
+        severity: 'success',
+        open: true
+      });
+    } catch (error) {
+      update({
+        message: error.message,
+        severity: 'error',
+        open: true
+      });
+    }
   };
 
   const paginatedCategoryOrders = applyCatePagination(
@@ -108,6 +135,7 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({ categoryOrders }) => {
     page,
     limit
   );
+
   const selectedSomeCryptoOrders =
     selectedCategoryOrders.length > 0 &&
     selectedCategoryOrders.length < categoryOrders.length;
@@ -119,7 +147,7 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({ categoryOrders }) => {
     <Card>
       {selectedBulkActions && (
         <Box flex={1} p={2}>
-          <BulkActions />
+          <BulkActions selectedCategoryOrders={selectedCategoryOrders} />
         </Box>
       )}
       <Divider />
@@ -195,40 +223,6 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({ categoryOrders }) => {
                       {categoryOrder.updated}
                     </Typography>
                   </TableCell>
-                  {/* <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {cryptoOrder.sourceName}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" noWrap>
-                      {cryptoOrder.sourceDesc}
-                    </Typography>
-                  </TableCell> */}
-                  {/* <TableCell align="right">
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {cryptoOrder.amountCrypto}
-                      {cryptoOrder.cryptoCurrency}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" noWrap>
-                      {numeral(cryptoOrder.amount).format(
-                        `${cryptoOrder.currency}0,0.00`
-                      )}
-                    </Typography>
-                  </TableCell> */}
-                  <TableCell align="right">
-                    <div></div>
-                  </TableCell>
                   <TableCell align="right">
                     <Tooltip title="Edit Order" arrow>
                       <IconButton
@@ -247,11 +241,14 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({ categoryOrders }) => {
                     <Tooltip title="Delete Order" arrow>
                       <IconButton
                         sx={{
-                          '&:hover': { background: theme.colors.error.lighter },
+                          '&:hover': {
+                            background: theme.colors.error.lighter
+                          },
                           color: theme.palette.error.main
                         }}
                         color="inherit"
                         size="small"
+                        onClick={() => handleDeleteCategory(categoryOrder.id)}
                       >
                         <DeleteTwoToneIcon fontSize="small" />
                       </IconButton>

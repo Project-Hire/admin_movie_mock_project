@@ -275,6 +275,17 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
+                  to="/create/category"
+                  startIcon={<DisplaySettingsTwoToneIcon />}
+                >
+                  Category
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
                   to="/management/profile/details"
                   startIcon={<AccountCircleTwoToneIcon />}
                 >

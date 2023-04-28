@@ -1,3 +1,8 @@
+import {
+  ICategoryListDataResponse,
+  ICreateCategoryDataResponse
+} from 'src/models/api/category.interface';
+
 export const API_BASE_URL = 'http://127.0.0.1:8090';
 
 export const getCategoryList = async (input: {
@@ -16,7 +21,7 @@ export const getCategoryList = async (input: {
       }
     );
 
-    const rawResponse = await response.json();
+    const rawResponse = (await response.json()) as ICategoryListDataResponse;
 
     return rawResponse;
   } catch (error: any) {
@@ -24,13 +29,12 @@ export const getCategoryList = async (input: {
   }
 };
 
-export const addActor = async (input: {
+export const addCategory = async (input: {
   name: string;
-  avatar: string;
   accessToken: string;
 }) => {
   try {
-    const { name, avatar, accessToken } = input;
+    const { name, accessToken } = input;
 
     if (!name || name === '') {
       return { success: false, data: null, message: 'Invalid Name' };
@@ -41,18 +45,18 @@ export const addActor = async (input: {
     }
 
     const response = await fetch(
-      `${API_BASE_URL}/api/collections/actors/records`,
+      `${API_BASE_URL}/api/collections/categories/records`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`
         },
-        body: JSON.stringify({ name, avatar })
+        body: JSON.stringify({ name })
       }
     );
 
-    const rawResponse = await response.json();
+    const rawResponse = (await response.json()) as ICreateCategoryDataResponse;
 
     return rawResponse;
   } catch (error: any) {

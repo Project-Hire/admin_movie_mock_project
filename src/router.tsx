@@ -33,12 +33,11 @@ const Category = Loader(
 );
 const Actor = Loader(lazy(() => import('src/content/applications/Actor')));
 
-const UserProfile = Loader(
-  lazy(() => import('src/content/applications/Users/profile'))
+const CreateCategoryPage = Loader(
+  lazy(() => import('src/content/create/CreateCategory'))
 );
-const UserSettings = Loader(
-  lazy(() => import('src/content/applications/Users/settings'))
-);
+
+const LoginPage = Loader(lazy(() => import('src/content/pages/Auth/Login')));
 
 // Components
 
@@ -86,7 +85,11 @@ const routes: RouteObject[] = [
     children: [
       {
         path: '/',
-        element: <Overview />
+        element: <Navigate to="/management/category" replace />
+      },
+      {
+        path: 'login',
+        element: <LoginPage />
       },
       {
         path: 'overview',
@@ -160,6 +163,20 @@ const routes: RouteObject[] = [
       {
         path: 'actor',
         element: <Actor />
+      }
+    ]
+  },
+  {
+    path: 'create',
+    element: <SidebarLayout />,
+    children: [
+      {
+        path: '',
+        element: <Navigate to="category" replace />
+      },
+      {
+        path: 'category',
+        element: <CreateCategoryPage />
       }
     ]
   },

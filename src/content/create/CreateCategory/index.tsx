@@ -1,12 +1,11 @@
 import { Helmet } from 'react-helmet-async';
+import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Grid, Container } from '@mui/material';
 import Footer from 'src/components/Footer';
+import { CreateCategoryForm } from './CreateCategoryForm';
 
-import Category from './Category';
-import PageHeader from './PageHeader';
-
-function ApplicationsCategory() {
+function CreateCategoryPage() {
   return (
     <>
       <Helmet>
@@ -24,7 +23,7 @@ function ApplicationsCategory() {
           spacing={3}
         >
           <Grid item xs={12}>
-            <Category />
+            <CreateCategoryForm />
           </Grid>
         </Grid>
       </Container>
@@ -33,4 +32,4 @@ function ApplicationsCategory() {
   );
 }
 
-export default ApplicationsCategory;
+export default CreateCategoryPage;

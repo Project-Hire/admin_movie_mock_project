@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import { Card } from '@mui/material';
 
 import CategoryTable from './CategoryTable';
 import { QUERY_KEYS } from 'src/models/key';
-import { ICategoryListDataResponse } from 'src/models/api/category';
+import { ICategoryListDataResponse } from 'src/models/api/category.interface';
 import { getCategoryList } from 'src/utils/api/category';
 
 function Category() {
@@ -30,9 +30,26 @@ function Category() {
     }
   );
 
-  console.log(category);
+  const handlePageChange = (event: any, newPage: number): void => {
+    setPage(newPage);
+  };
+
+  const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    setLimit(parseInt(event.target.value));
+  };
+
   return (
-    <Card>{category && <CategoryTable categoryOrders={category.items} />}</Card>
+    <Card>
+      {category && (
+        <CategoryTable
+          page={page}
+          limit={limit}
+          handleLimitChange={handleLimitChange}
+          handlePageChange={handlePageChange}
+          categoryOrders={category.items}
+        />
+      )}
+    </Card>
   );
 }
 

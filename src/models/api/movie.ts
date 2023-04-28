@@ -1,5 +1,5 @@
 import { IActorListData } from './actor';
-import { ICategoryListData } from './category';
+import { ICategoryListData } from './category.interface';
 
 export interface IMovieListData {
   id: string;
