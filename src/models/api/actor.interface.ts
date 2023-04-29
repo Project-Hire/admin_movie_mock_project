@@ -14,3 +14,13 @@ export interface IActorListData {
   name: string;
   avatar: string;
 }
+
+export interface ICreateActorDataResponse {
+  id: string;
+  collectionId: string;
+  collectionName: string;
+  created: string;
+  updated: string;
+  name: string;
+  avatar: string;
+}

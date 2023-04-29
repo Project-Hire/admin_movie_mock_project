@@ -1,4 +1,4 @@
-import { IActorListData } from './actor';
+import { IActorListData } from './actor.interface';
 import { ICategoryListData } from './category.interface';
 
 export interface IMovieListData {

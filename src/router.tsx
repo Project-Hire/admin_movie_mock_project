@@ -36,6 +36,12 @@ const Actor = Loader(lazy(() => import('src/content/applications/Actor')));
 const CreateCategoryPage = Loader(
   lazy(() => import('src/content/create/CreateCategory'))
 );
+const CreateActorPage = Loader(
+  lazy(() => import('src/content/create/CreateActor'))
+);
+const CreateMoviePage = Loader(
+  lazy(() => import('src/content/create/CreateMovie'))
+);
 
 const LoginPage = Loader(lazy(() => import('src/content/pages/Auth/Login')));
 
@@ -173,6 +179,58 @@ const routes: RouteObject[] = [
       {
         path: '',
         element: <Navigate to="category" replace />
+      },
+      {
+        path: 'category',
+        element: <CreateCategoryPage />
+      },
+      {
+        path: 'actor',
+        element: <CreateActorPage />
+      },
+      {
+        path: 'movie',
+        element: <CreateMoviePage />
+      }
+    ]
+  },
+  {
+    path: 'detail',
+    element: <SidebarLayout />,
+    children: [
+      {
+        path: '',
+        element: <Navigate to="category" replace />
+      },
+      {
+        path: 'category',
+        element: <CreateCategoryPage />
+      },
+      {
+        path: 'category',
+        element: <CreateCategoryPage />
+      },
+      {
+        path: 'category',
+        element: <CreateCategoryPage />
+      }
+    ]
+  },
+  {
+    path: 'update',
+    element: <SidebarLayout />,
+    children: [
+      {
+        path: '',
+        element: <Navigate to="category" replace />
+      },
+      {
+        path: 'category',
+        element: <CreateCategoryPage />
+      },
+      {
+        path: 'category',
+        element: <CreateCategoryPage />
       },
       {
         path: 'category',
