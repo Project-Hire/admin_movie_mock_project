@@ -206,7 +206,7 @@ const RecentOrdersTable: FC<IMovieTableProps> = ({
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <img title="movie_poster" src={movieOrder.poster} />
+                    <img title={movieOrder.name} src={movieOrder.poster} />
                   </TableCell>
                   <TableCell>
                     <Typography
