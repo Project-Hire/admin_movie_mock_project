@@ -1,17 +1,14 @@
 import { ChangeEvent, useState } from 'react';
 import { Card, Box, TextField, Button } from '@mui/material';
-import Input from '@mui/base/InputUnstyled';
 import { IDataOpenAlert, useStatusAlert } from 'src/stores/useStatusAlert';
 import { addCategory } from 'src/utils/api/category';
 import { useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from 'src/models/key';
 import { useNavigate } from 'react-router';
 import { ICreateCategoryDataResponse } from 'src/models/api/category.interface';
-import { addActor } from 'src/utils/api/actor';
 
 interface State {
   name: string;
-  avatar: string;
 }
 
 export const CreateCategoryForm = () => {
@@ -20,8 +17,7 @@ export const CreateCategoryForm = () => {
   const [update] = useStatusAlert((state: IDataOpenAlert) => [state.update]);
 
   const [values, setValues] = useState<State>({
-    name: '',
-    avatar: ''
+    name: ''
   });
 
   const handleChange =
@@ -33,7 +29,7 @@ export const CreateCategoryForm = () => {
     try {
       e.preventDefault();
 
-      const response = (await addActor({
+      const response = (await addCategory({
         ...values,
         accessToken: 'abc'
       })) as ICreateCategoryDataResponse;
@@ -81,13 +77,6 @@ export const CreateCategoryForm = () => {
           name="name"
           label="Name"
           defaultValue={values.name}
-          onChange={handleChange('name')}
-        />
-        <Input
-          type="file"
-          name="avatar"
-          aria-label="Avatar"
-          defaultValue={values.avatar}
           onChange={handleChange('name')}
         />
         <Button sx={{ margin: 1 }} variant="contained" type="submit">

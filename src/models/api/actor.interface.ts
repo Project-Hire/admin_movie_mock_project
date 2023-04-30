@@ -20,7 +20,6 @@ export interface ICreateActorDataResponse {
   collectionId: string;
   collectionName: string;
   created: string;
-  updated: string;
   name: string;
   avatar: string;
 }

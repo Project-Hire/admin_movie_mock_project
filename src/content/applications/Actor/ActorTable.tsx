@@ -180,15 +180,7 @@ const RecentOrdersTable: FC<IActorTableProps> = ({
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {ActorOrder.avatar}
-                    </Typography>
+                    <img title={ActorOrder.name} src={ActorOrder.avatar}/>
                   </TableCell>
                   <TableCell>
                     <Typography

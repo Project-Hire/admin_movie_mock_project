@@ -1,4 +1,5 @@
 import { FC, ChangeEvent, useState } from 'react';
+import { useNavigate } from 'react-router';
 import { format } from 'date-fns';
 import numeral from 'numeral';
 import PropTypes from 'prop-types';
@@ -32,6 +33,7 @@ import {
 } from 'src/models/api/category.interface';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
 import BulkActions from './BulkActions';
 import { IDataOpenAlert, useStatusAlert } from 'src/stores/useStatusAlert';
 import { deleteCategory } from 'src/utils/api/category';
@@ -63,6 +65,7 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({
   handlePageChange
 }) => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const [update] = useStatusAlert((state: IDataOpenAlert) => [state.update]);
 
   const [selectedCategoryOrders, setSelectedCategoryOrders] = useState<
@@ -95,6 +98,13 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({
         prevSelected.filter((id) => id !== categoryOrderId)
       );
     }
+  };
+  const handleDetailCategory = async (id: string) => {
+    navigate(`/detail/category/${id}`);
+  };
+
+  const handleEditCategory = async (id: string) => {
+    navigate(`/edit/category/${id}`);
   };
 
   const handleDeleteCategory = async (id: string) => {
@@ -211,6 +221,21 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
+                    <Tooltip title="View Order" arrow>
+                      <IconButton
+                        sx={{
+                          '&:hover': {
+                            background: theme.colors.primary.lighter
+                          },
+                          color: theme.palette.primary.main
+                        }}
+                        color="inherit"
+                        size="small"
+                        onClick={() => handleDetailCategory(categoryOrder.id)}
+                      >
+                        <VisibilityTwoToneIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
                     <Tooltip title="Edit Order" arrow>
                       <IconButton
                         sx={{
@@ -221,6 +246,7 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({
                         }}
                         color="inherit"
                         size="small"
+                        onClick={() => handleEditCategory(categoryOrder.id)}
                       >
                         <EditTwoToneIcon fontSize="small" />
                       </IconButton>

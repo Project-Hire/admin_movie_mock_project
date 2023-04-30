@@ -43,6 +43,22 @@ const CreateMoviePage = Loader(
   lazy(() => import('src/content/create/CreateMovie'))
 );
 
+const DetailCategoryPage = Loader(
+  lazy(() => import('src/content/detail/DetailCategory'))
+);
+const DetailActorPage = Loader(
+  lazy(() => import('src/content/detail/DetailActor'))
+);
+const DetailMoviePage = Loader(
+  lazy(() => import('src/content/detail/DetailMovie'))
+);
+
+const EditCategoryPage = Loader(
+  lazy(() => import('src/content/edit/EditCategory'))
+);
+const EditActorPage = Loader(lazy(() => import('src/content/edit/EditActor')));
+const EditlMoviePage = Loader(lazy(() => import('src/content/edit/EditMovie')));
+
 const LoginPage = Loader(lazy(() => import('src/content/pages/Auth/Login')));
 
 // Components
@@ -203,21 +219,21 @@ const routes: RouteObject[] = [
         element: <Navigate to="category" replace />
       },
       {
-        path: 'category',
-        element: <CreateCategoryPage />
-      },
-      {
-        path: 'category',
-        element: <CreateCategoryPage />
-      },
-      {
-        path: 'category',
-        element: <CreateCategoryPage />
+        path: 'category/:id',
+        element: <DetailCategoryPage />
       }
+      // {
+      //   path: 'category/:id',
+      //   element: <DetailCategoryPage />
+      // },
+      // {
+      //   path: 'category/:id',
+      //   element: <DetailCategoryPage />
+      // }
     ]
   },
   {
-    path: 'update',
+    path: 'edit',
     element: <SidebarLayout />,
     children: [
       {
@@ -226,16 +242,16 @@ const routes: RouteObject[] = [
       },
       {
         path: 'category',
-        element: <CreateCategoryPage />
-      },
-      {
-        path: 'category',
-        element: <CreateCategoryPage />
-      },
-      {
-        path: 'category',
-        element: <CreateCategoryPage />
+        element: <EditCategoryPage />
       }
+      // {
+      //   path: 'category',
+      //   element: <EditCategoryPage />
+      // },
+      // {
+      //   path: 'category',
+      //   element: <EditCategoryPage />
+      // }
     ]
   },
   {
