@@ -33,7 +33,7 @@ interface State {
   category_id: string;
 }
 
-export const CreateCategoryForm = () => {
+export const CreateMovieForm = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [update] = useStatusAlert((state: IDataOpenAlert) => [state.update]);

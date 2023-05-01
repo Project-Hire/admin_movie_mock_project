@@ -3,13 +3,13 @@ import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Grid, Container } from '@mui/material';
 import Footer from 'src/components/Footer';
-import { CreateCategoryForm } from './CreateCategoryForm';
+import { CreateMovieForm } from './CreateMovieForm';
 
 function CreateCategoryPage() {
   return (
     <>
       <Helmet>
-        <title>Category - Applications</title>
+        <title>Movie - Applications</title>
       </Helmet>
       <PageTitleWrapper>
         <PageHeader />
@@ -23,7 +23,7 @@ function CreateCategoryPage() {
           spacing={3}
         >
           <Grid item xs={12}>
-            <CreateCategoryForm />
+            <CreateMovieForm />
           </Grid>
         </Grid>
       </Container>

@@ -57,7 +57,7 @@ const EditCategoryPage = Loader(
   lazy(() => import('src/content/edit/EditCategory'))
 );
 const EditActorPage = Loader(lazy(() => import('src/content/edit/EditActor')));
-const EditlMoviePage = Loader(lazy(() => import('src/content/edit/EditMovie')));
+const EditMoviePage = Loader(lazy(() => import('src/content/edit/EditMovie')));
 
 const LoginPage = Loader(lazy(() => import('src/content/pages/Auth/Login')));
 
@@ -221,15 +221,15 @@ const routes: RouteObject[] = [
       {
         path: 'category/:id',
         element: <DetailCategoryPage />
+      },
+      {
+        path: 'actor/:id',
+        element: <DetailActorPage />
+      },
+      {
+        path: 'movie/:id',
+        element: <DetailMoviePage />
       }
-      // {
-      //   path: 'category/:id',
-      //   element: <DetailCategoryPage />
-      // },
-      // {
-      //   path: 'category/:id',
-      //   element: <DetailCategoryPage />
-      // }
     ]
   },
   {
@@ -241,17 +241,17 @@ const routes: RouteObject[] = [
         element: <Navigate to="category" replace />
       },
       {
-        path: 'category',
+        path: 'category/:id',
         element: <EditCategoryPage />
+      },
+      {
+        path: 'actor/:id',
+        element: <EditActorPage />
+      },
+      {
+        path: 'movie/:id',
+        element: <EditMoviePage />
       }
-      // {
-      //   path: 'category',
-      //   element: <EditCategoryPage />
-      // },
-      // {
-      //   path: 'category',
-      //   element: <EditCategoryPage />
-      // }
     ]
   },
   {
