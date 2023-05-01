@@ -21,7 +21,7 @@ export interface IMovieListDataResponse {
   items: IMovieListData[];
 }
 
-export interface ICreateActorDataResponse {
+export interface ICreateMovieDataResponse {
   id: string;
   collectionId: string;
   collectionName: string;

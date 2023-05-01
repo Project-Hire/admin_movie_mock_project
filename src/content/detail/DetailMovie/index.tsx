@@ -3,13 +3,13 @@ import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Grid, Container } from '@mui/material';
 import Footer from 'src/components/Footer';
-import { DetailCategory } from './DetailCategory';
+import { DetailMovie } from './DetailMovie';
 
-function DetailCategoryPage() {
+function DetailMoviePage() {
   return (
     <>
       <Helmet>
-        <title>Category Details - Management</title>
+        <title>Movie Details - Management</title>
       </Helmet>
       <PageTitleWrapper>
         <PageHeader />
@@ -23,7 +23,7 @@ function DetailCategoryPage() {
           spacing={3}
         >
           <Grid item xs={12}>
-            <DetailCategory />
+            <DetailMovie />
           </Grid>
         </Grid>
       </Container>
@@ -32,4 +32,4 @@ function DetailCategoryPage() {
   );
 }
 
-export default DetailCategoryPage;
+export default DetailMoviePage;

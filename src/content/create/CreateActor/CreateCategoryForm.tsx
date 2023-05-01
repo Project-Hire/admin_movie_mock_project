@@ -1,6 +1,17 @@
 import { ChangeEvent, useState } from 'react';
-import { Card, Box, TextField, Button } from '@mui/material';
-import Input from '@mui/base/InputUnstyled';
+import {
+  Box,
+  Typography,
+  Card,
+  Tooltip,
+  Avatar,
+  CardMedia,
+  Button,
+  TextField,
+  IconButton
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
+import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
 import { IDataOpenAlert, useStatusAlert } from 'src/stores/useStatusAlert';
 import { addCategory } from 'src/utils/api/category';
 import { useQueryClient } from '@tanstack/react-query';
@@ -13,6 +24,50 @@ interface State {
   name: string;
   avatar: string;
 }
+
+const Input = styled('input')({
+  display: 'none'
+});
+
+const AvatarWrapper = styled(Card)(
+  ({ theme }) => `
+
+    position: relative;
+    overflow: visible;
+    display: inline-block;
+    margin-top: -${theme.spacing(9)};
+    margin-left: ${theme.spacing(2)};
+
+    .MuiAvatar-root {
+      width: ${theme.spacing(16)};
+      height: ${theme.spacing(16)};
+    }
+`
+);
+
+const ButtonUploadWrapper = styled(Box)(
+  ({ theme }) => `
+    position: absolute;
+    width: ${theme.spacing(4)};
+    height: ${theme.spacing(4)};
+    bottom: -${theme.spacing(1)};
+    right: -${theme.spacing(1)};
+
+    .MuiIconButton-root {
+      border-radius: 100%;
+      background: ${theme.colors.primary.main};
+      color: ${theme.palette.primary.contrastText};
+      box-shadow: ${theme.colors.shadows.primary};
+      width: ${theme.spacing(4)};
+      height: ${theme.spacing(4)};
+      padding: 0;
+  
+      &:hover {
+        background: ${theme.colors.primary.dark};
+      }
+    }
+`
+);
 
 export const CreateCategoryForm = () => {
   const navigate = useNavigate();
@@ -83,13 +138,22 @@ export const CreateCategoryForm = () => {
           defaultValue={values.name}
           onChange={handleChange('name')}
         />
-        <Input
-          type="file"
-          name="avatar"
-          aria-label="Avatar"
-          defaultValue={values.avatar}
-          onChange={handleChange('name')}
-        />
+        <AvatarWrapper>
+          <Avatar variant="rounded" alt={values.name} src={values.avatar} />
+          <ButtonUploadWrapper>
+            <Input
+              accept="image/*"
+              id="icon-button-file"
+              name="icon-button-file"
+              type="file"
+            />
+            <label htmlFor="icon-button-file">
+              <IconButton component="span" color="primary">
+                <UploadTwoToneIcon />
+              </IconButton>
+            </label>
+          </ButtonUploadWrapper>
+        </AvatarWrapper>
         <Button sx={{ margin: 1 }} variant="contained" type="submit">
           Create
         </Button>

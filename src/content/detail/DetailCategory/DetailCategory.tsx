@@ -1,4 +1,4 @@
-import { Box, Typography, Tooltip, IconButton } from '@mui/material';
+import { Card, Box, Typography, Tooltip, IconButton } from '@mui/material';
 import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone';
 import { getCategoryData } from 'src/utils/api/category';
 import { useQuery } from '@tanstack/react-query';
@@ -34,25 +34,27 @@ export const DetailCategory = () => {
   }
 
   return (
-    <Box display="flex" mb={3}>
-      <Tooltip arrow placement="top" title="Go back">
-        <IconButton color="primary" sx={{ p: 2, mr: 2 }}>
-          <ArrowBackTwoToneIcon />
-        </IconButton>
-      </Tooltip>
-      {categoryDetail && (
-        <Box>
-          <Typography variant="h3" component="h3" gutterBottom>
-            Profile for {categoryDetail.name}
-          </Typography>
-          <Typography variant="subtitle2">
-            Create at {categoryDetail.created}
-          </Typography>
-          <Typography variant="subtitle2">
-            Create at {categoryDetail.updated}
-          </Typography>
-        </Box>
-      )}
-    </Box>
+    <Card>
+      <Box display="flex" mb={3} p={3}>
+        <Tooltip arrow placement="top" title="Go back">
+          <IconButton color="primary" sx={{ p: 2, mr: 2 }}>
+            <ArrowBackTwoToneIcon />
+          </IconButton>
+        </Tooltip>
+        {categoryDetail && (
+          <Box>
+            <Typography variant="h3" component="h3" gutterBottom>
+              Profile for {categoryDetail.name}
+            </Typography>
+            <Typography variant="subtitle2">
+              Create at {categoryDetail.created}
+            </Typography>
+            <Typography variant="subtitle2">
+              Create at {categoryDetail.updated}
+            </Typography>
+          </Box>
+        )}
+      </Box>
+    </Card>
   );
 };

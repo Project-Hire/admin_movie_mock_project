@@ -1,13 +1,18 @@
 import { ChangeEvent, useState } from 'react';
 import { Card, Box, TextField, Button } from '@mui/material';
 import { IDataOpenAlert, useStatusAlert } from 'src/stores/useStatusAlert';
-import { addCategory } from 'src/utils/api/category';
-import { useQueryClient } from '@tanstack/react-query';
+import {
+  addCategory,
+  getCategoryData,
+  updateCategory
+} from 'src/utils/api/category';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from 'src/models/key';
-import { useNavigate } from 'react-router';
+import { Navigate, useNavigate, useParams } from 'react-router';
 import { ICreateCategoryDataResponse } from 'src/models/api/category.interface';
 
 interface State {
+  id: string;
   name: string;
 }
 
@@ -15,10 +20,37 @@ export const CreateCategoryForm = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [update] = useStatusAlert((state: IDataOpenAlert) => [state.update]);
+  const { id } = useParams();
 
   const [values, setValues] = useState<State>({
+    id: `${id}`,
     name: ''
   });
+
+  const {
+    data: categoryDetail,
+    isError,
+    isFetching
+  } = useQuery(
+    [QUERY_KEYS.CATEGORY_DETAIL, id],
+    async () => {
+      const response = await getCategoryData({
+        id,
+        accessToken: 'abc'
+      });
+
+      return response;
+    },
+    {
+      enabled: !!id,
+      refetchInterval: false,
+      refetchOnWindowFocus: false
+    }
+  );
+
+  if (!isFetching && (isError || typeof categoryDetail === 'undefined')) {
+    return <Navigate to={'/404'} replace />;
+  }
 
   const handleChange =
     (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +61,7 @@ export const CreateCategoryForm = () => {
     try {
       e.preventDefault();
 
-      const response = (await addCategory({
+      const response = (await updateCategory({
         ...values,
         accessToken: 'abc'
       })) as ICreateCategoryDataResponse;
@@ -76,7 +108,7 @@ export const CreateCategoryForm = () => {
           id="outlined-required"
           name="name"
           label="Name"
-          defaultValue={values.name}
+          defaultValue={categoryDetail.name}
           onChange={handleChange('name')}
         />
         <Button sx={{ margin: 1 }} variant="contained" type="submit">
