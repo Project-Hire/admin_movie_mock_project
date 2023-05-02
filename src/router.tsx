@@ -36,6 +36,28 @@ const Actor = Loader(lazy(() => import('src/content/applications/Actor')));
 const CreateCategoryPage = Loader(
   lazy(() => import('src/content/create/CreateCategory'))
 );
+const CreateActorPage = Loader(
+  lazy(() => import('src/content/create/CreateActor'))
+);
+const CreateMoviePage = Loader(
+  lazy(() => import('src/content/create/CreateMovie'))
+);
+
+const DetailCategoryPage = Loader(
+  lazy(() => import('src/content/detail/DetailCategory'))
+);
+const DetailActorPage = Loader(
+  lazy(() => import('src/content/detail/DetailActor'))
+);
+const DetailMoviePage = Loader(
+  lazy(() => import('src/content/detail/DetailMovie'))
+);
+
+const EditCategoryPage = Loader(
+  lazy(() => import('src/content/edit/EditCategory'))
+);
+const EditActorPage = Loader(lazy(() => import('src/content/edit/EditActor')));
+const EditMoviePage = Loader(lazy(() => import('src/content/edit/EditMovie')));
 
 const LoginPage = Loader(lazy(() => import('src/content/pages/Auth/Login')));
 
@@ -177,6 +199,58 @@ const routes: RouteObject[] = [
       {
         path: 'category',
         element: <CreateCategoryPage />
+      },
+      {
+        path: 'actor',
+        element: <CreateActorPage />
+      },
+      {
+        path: 'movie',
+        element: <CreateMoviePage />
+      }
+    ]
+  },
+  {
+    path: 'detail',
+    element: <SidebarLayout />,
+    children: [
+      {
+        path: '',
+        element: <Navigate to="category" replace />
+      },
+      {
+        path: 'category/:id',
+        element: <DetailCategoryPage />
+      },
+      {
+        path: 'actor/:id',
+        element: <DetailActorPage />
+      },
+      {
+        path: 'movie/:id',
+        element: <DetailMoviePage />
+      }
+    ]
+  },
+  {
+    path: 'edit',
+    element: <SidebarLayout />,
+    children: [
+      {
+        path: '',
+        element: <Navigate to="category" replace />
+      },
+      {
+        path: 'category/:id',
+        element: <EditCategoryPage />
+      },
+      {
+        path: 'actor/:id',
+        element: <EditActorPage />
+      },
+      {
+        path: 'movie/:id',
+        element: <EditMoviePage />
       }
     ]
   },

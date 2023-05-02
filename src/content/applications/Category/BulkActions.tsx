@@ -14,6 +14,10 @@ import { styled } from '@mui/material/styles';
 
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
+import { deleteCategory } from 'src/utils/api/category';
+import { useQueryClient } from '@tanstack/react-query';
+import { IDataOpenAlert, useStatusAlert } from 'src/stores/useStatusAlert';
+import { QUERY_KEYS } from 'src/models/key';
 
 interface Props {
   selectedCategoryOrders: string[];
@@ -31,6 +35,9 @@ const ButtonError = styled(Button)(
 );
 
 function BulkActions({ selectedCategoryOrders }: Props) {
+  const queryClient = useQueryClient();
+  const [update] = useStatusAlert((state: IDataOpenAlert) => [state.update]);
+
   const [onMenuOpen, menuOpen] = useState<boolean>(false);
   const moreRef = useRef<HTMLButtonElement | null>(null);
 
@@ -42,8 +49,49 @@ function BulkActions({ selectedCategoryOrders }: Props) {
     menuOpen(false);
   };
 
-  const handleDelete = () => {
-    console.log(selectedCategoryOrders);
+  const handleDelete = async () => {
+    if (selectedCategoryOrders.length === 0) {
+      update({
+        message: `Please select the category to delete`,
+        severity: 'success',
+        open: true
+      });
+    } else {
+      const promises = selectedCategoryOrders.map(
+        async (selectedCategory: string) => {
+          await deleteCategory({
+            id: selectedCategory,
+            accessToken: 'abc'
+          });
+        }
+      );
+
+      try {
+        const results = await Promise.all(promises);
+
+        if (results) {
+          queryClient.invalidateQueries([QUERY_KEYS.CATEGORY_LIST]);
+
+          update({
+            message: `Delete Category Successfully`,
+            severity: 'success',
+            open: true
+          });
+        } else {
+          update({
+            message: `Delete Category Fail`,
+            severity: 'error',
+            open: true
+          });
+        }
+      } catch (error) {
+        update({
+          message: error.message,
+          severity: 'error',
+          open: true
+        });
+      }
+    }
   };
 
   return (

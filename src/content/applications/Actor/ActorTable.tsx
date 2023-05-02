@@ -1,5 +1,4 @@
 import { FC, ChangeEvent, useState } from 'react';
-import { useNavigate } from 'react-router';
 import { format } from 'date-fns';
 import numeral from 'numeral';
 import PropTypes from 'prop-types';
@@ -27,94 +26,79 @@ import {
 } from '@mui/material';
 
 import Label from 'src/components/Label';
+import { CryptoOrder, CryptoOrderStatus } from 'src/models/crypto_order';
 import {
-  ICategoryListDataResponse,
-  ICategoryListData
-} from 'src/models/api/category.interface';
+  IActorListDataResponse,
+  IActorListData
+} from 'src/models/api/actor.interface';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
 import BulkActions from './BulkActions';
 import { IDataOpenAlert, useStatusAlert } from 'src/stores/useStatusAlert';
-import { deleteCategory } from 'src/utils/api/category';
+import { deleteActor } from 'src/utils/api/actor';
 import { useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from 'src/models/key';
 
-interface ICategoryTableProps {
+interface IActorTableProps {
   className?: string;
-  categoryOrders: ICategoryListData[];
+  actorOrders: IActorListData[];
   page: number;
   limit: number;
   handlePageChange: (event: any, newPage: number) => void;
   handleLimitChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const applyCatePagination = (
-  categoryOrders: ICategoryListData[],
+const applyActorPagination = (
+  actorOrders: IActorListData[],
   page: number,
   limit: number
-): ICategoryListData[] => {
-  return categoryOrders.slice(page * limit, page * limit + limit);
+): IActorListData[] => {
+  return actorOrders.slice(page * limit, page * limit + limit);
 };
 
-const RecentOrdersTable: FC<ICategoryTableProps> = ({
-  categoryOrders,
+const RecentOrdersTable: FC<IActorTableProps> = ({
+  actorOrders,
   page,
   limit,
   handleLimitChange,
   handlePageChange
 }) => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
   const [update] = useStatusAlert((state: IDataOpenAlert) => [state.update]);
 
-  const [selectedCategoryOrders, setSelectedCategoryOrders] = useState<
-    string[]
-  >([]);
+  const [selectedActorOrders, setSelectedActorOrders] = useState<string[]>([]);
 
-  const selectedBulkActions = selectedCategoryOrders.length > 0;
+  const selectedBulkActions = selectedActorOrders.length > 0;
 
-  const handleSelectAllCategoryOrders = (
+  const handleSelectAllActorOrders = (
     event: ChangeEvent<HTMLInputElement>
   ): void => {
-    setSelectedCategoryOrders(
-      event.target.checked
-        ? categoryOrders.map((categoryOrder) => categoryOrder.id)
-        : []
+    setSelectedActorOrders(
+      event.target.checked ? actorOrders.map((actorOrder) => actorOrder.id) : []
     );
   };
 
-  const handleSelectOneCategoryOrder = (
+  const handleSelectOneActorOrder = (
     event: ChangeEvent<HTMLInputElement>,
-    categoryOrderId: string
+    actorOrderId: string
   ): void => {
-    if (!selectedCategoryOrders.includes(categoryOrderId)) {
-      setSelectedCategoryOrders((prevSelected) => [
-        ...prevSelected,
-        categoryOrderId
-      ]);
+    if (!selectedActorOrders.includes(actorOrderId)) {
+      setSelectedActorOrders((prevSelected) => [...prevSelected, actorOrderId]);
     } else {
-      setSelectedCategoryOrders((prevSelected) =>
-        prevSelected.filter((id) => id !== categoryOrderId)
+      setSelectedActorOrders((prevSelected) =>
+        prevSelected.filter((id) => id !== actorOrderId)
       );
     }
   };
-  const handleDetailCategory = async (id: string) => {
-    navigate(`/detail/category/${id}`);
-  };
 
-  const handleEditCategory = async (id: string) => {
-    navigate(`/edit/category/${id}`);
-  };
-
-  const handleDeleteCategory = async (id: string) => {
+  const handleDeleteActor = async (id: string) => {
     try {
-      await deleteCategory({ id, accessToken: 'abc' });
+      await deleteActor({ id, accessToken: 'abc' });
 
-      queryClient.invalidateQueries([QUERY_KEYS.CATEGORY_LIST]);
+      queryClient.invalidateQueries([QUERY_KEYS.ACTOR_LIST]);
 
       update({
-        message: `Delete Category Successfully`,
+        message: `Delete Actor Successfully`,
         severity: 'success',
         open: true
       });
@@ -127,24 +111,20 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({
     }
   };
 
-  const paginatedCategoryOrders = applyCatePagination(
-    categoryOrders,
-    page,
-    limit
-  );
+  const paginatedActorOrders = applyActorPagination(actorOrders, page, limit);
 
-  const selectedSomeCategoryOrders =
-    selectedCategoryOrders.length > 0 &&
-    selectedCategoryOrders.length < categoryOrders.length;
-  const selectedAllCategoryOrders =
-    selectedCategoryOrders.length === categoryOrders.length;
+  const selectedSomeActorOrders =
+    selectedActorOrders.length > 0 &&
+    selectedActorOrders.length < actorOrders.length;
+  const selectedAllActorOrders =
+    selectedActorOrders.length === actorOrders.length;
   const theme = useTheme();
 
   return (
     <Card>
       {selectedBulkActions && (
         <Box flex={1} p={2}>
-          <BulkActions selectedCategoryOrders={selectedCategoryOrders} />
+          <BulkActions selectedActorOrders={selectedActorOrders} />
         </Box>
       )}
       <Divider />
@@ -155,36 +135,37 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({
               <TableCell padding="checkbox">
                 <Checkbox
                   color="primary"
-                  checked={selectedAllCategoryOrders}
-                  indeterminate={selectedSomeCategoryOrders}
-                  onChange={handleSelectAllCategoryOrders}
+                  checked={selectedAllActorOrders}
+                  indeterminate={selectedSomeActorOrders}
+                  onChange={handleSelectAllActorOrders}
                 />
               </TableCell>
-              <TableCell>Category Name</TableCell>
+              <TableCell>Actor Name</TableCell>
+              <TableCell>Avatar</TableCell>
               <TableCell>Create At</TableCell>
               <TableCell>Update At</TableCell>
               <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedCategoryOrders.map((categoryOrder) => {
-              const isCategoryOrderSelected = selectedCategoryOrders.includes(
-                categoryOrder.id
+            {paginatedActorOrders.map((ActorOrder) => {
+              const isActorOrderSelected = selectedActorOrders.includes(
+                ActorOrder.id
               );
               return (
                 <TableRow
                   hover
-                  key={categoryOrder.id}
-                  selected={isCategoryOrderSelected}
+                  key={ActorOrder.id}
+                  selected={isActorOrderSelected}
                 >
                   <TableCell padding="checkbox">
                     <Checkbox
                       color="primary"
-                      checked={isCategoryOrderSelected}
+                      checked={isActorOrderSelected}
                       onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        handleSelectOneCategoryOrder(event, categoryOrder.id)
+                        handleSelectOneActorOrder(event, ActorOrder.id)
                       }
-                      value={isCategoryOrderSelected}
+                      value={isActorOrderSelected}
                     />
                   </TableCell>
                   <TableCell>
@@ -195,7 +176,21 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({
                       gutterBottom
                       noWrap
                     >
-                      {categoryOrder.name}
+                      {ActorOrder.name}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <img title={ActorOrder.name} src={ActorOrder.avatar}/>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {ActorOrder.created}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -206,36 +201,10 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({
                       gutterBottom
                       noWrap
                     >
-                      {categoryOrder.created}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {categoryOrder.updated}
+                      {ActorOrder.updated}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
-                    <Tooltip title="View Order" arrow>
-                      <IconButton
-                        sx={{
-                          '&:hover': {
-                            background: theme.colors.primary.lighter
-                          },
-                          color: theme.palette.primary.main
-                        }}
-                        color="inherit"
-                        size="small"
-                        onClick={() => handleDetailCategory(categoryOrder.id)}
-                      >
-                        <VisibilityTwoToneIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
                     <Tooltip title="Edit Order" arrow>
                       <IconButton
                         sx={{
@@ -246,7 +215,6 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({
                         }}
                         color="inherit"
                         size="small"
-                        onClick={() => handleEditCategory(categoryOrder.id)}
                       >
                         <EditTwoToneIcon fontSize="small" />
                       </IconButton>
@@ -261,7 +229,7 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({
                         }}
                         color="inherit"
                         size="small"
-                        onClick={() => handleDeleteCategory(categoryOrder.id)}
+                        onClick={() => handleDeleteActor(ActorOrder.id)}
                       >
                         <DeleteTwoToneIcon fontSize="small" />
                       </IconButton>

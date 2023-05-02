@@ -158,6 +158,7 @@ export const getCategoryData = async (input: {
       }
     );
 
+    console.log('Response:', response);
     const rawResponse = await response.json();
 
     return rawResponse;

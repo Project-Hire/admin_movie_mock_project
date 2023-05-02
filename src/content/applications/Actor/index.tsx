@@ -1,16 +1,16 @@
 import { Helmet } from 'react-helmet-async';
-import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Grid, Container } from '@mui/material';
 import Footer from 'src/components/Footer';
 
-import RecentOrders from './RecentOrders';
+import Actor from './Actor';
+import PageHeader from './PageHeader';
 
-function ApplicationsTransactions() {
+function ApplicationsActor() {
   return (
     <>
       <Helmet>
-        <title>Transactions - Applications</title>
+        <title>Category - Applications</title>
       </Helmet>
       <PageTitleWrapper>
         <PageHeader />
@@ -24,7 +24,7 @@ function ApplicationsTransactions() {
           spacing={3}
         >
           <Grid item xs={12}>
-            <RecentOrders />
+            <Actor />
           </Grid>
         </Grid>
       </Container>
@@ -33,4 +33,4 @@ function ApplicationsTransactions() {
   );
 }
 
-export default ApplicationsTransactions;
+export default ApplicationsActor;

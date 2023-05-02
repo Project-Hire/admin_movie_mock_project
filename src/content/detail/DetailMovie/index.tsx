@@ -1,16 +1,15 @@
 import { Helmet } from 'react-helmet-async';
+import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Grid, Container } from '@mui/material';
 import Footer from 'src/components/Footer';
+import { DetailMovie } from './DetailMovie';
 
-import Movie from './Movie';
-import PageHeader from './PageHeader';
-
-function ApplicationsMovie() {
+function DetailMoviePage() {
   return (
     <>
       <Helmet>
-        <title>Movie - Applications</title>
+        <title>Movie Details - Management</title>
       </Helmet>
       <PageTitleWrapper>
         <PageHeader />
@@ -24,7 +23,7 @@ function ApplicationsMovie() {
           spacing={3}
         >
           <Grid item xs={12}>
-            <Movie />
+            <DetailMovie />
           </Grid>
         </Grid>
       </Container>
@@ -33,4 +32,4 @@ function ApplicationsMovie() {
   );
 }
 
-export default ApplicationsMovie;
+export default DetailMoviePage;

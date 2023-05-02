@@ -1,5 +1,4 @@
 import { FC, ChangeEvent, useState } from 'react';
-import { useNavigate } from 'react-router';
 import { format } from 'date-fns';
 import numeral from 'numeral';
 import PropTypes from 'prop-types';
@@ -12,6 +11,7 @@ import {
   Card,
   Checkbox,
   IconButton,
+  ImageListItem,
   Table,
   TableBody,
   TableCell,
@@ -27,94 +27,79 @@ import {
 } from '@mui/material';
 
 import Label from 'src/components/Label';
+import { CryptoOrder, CryptoOrderStatus } from 'src/models/crypto_order';
 import {
-  ICategoryListDataResponse,
-  ICategoryListData
-} from 'src/models/api/category.interface';
+  IMovieListDataResponse,
+  IMovieListData
+} from 'src/models/api/movie.interface';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
 import BulkActions from './BulkActions';
 import { IDataOpenAlert, useStatusAlert } from 'src/stores/useStatusAlert';
-import { deleteCategory } from 'src/utils/api/category';
+import { deleteMovie } from 'src/utils/api/movie';
 import { useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from 'src/models/key';
 
-interface ICategoryTableProps {
+interface IMovieTableProps {
   className?: string;
-  categoryOrders: ICategoryListData[];
+  movieOrders: IMovieListData[];
   page: number;
   limit: number;
   handlePageChange: (event: any, newPage: number) => void;
   handleLimitChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const applyCatePagination = (
-  categoryOrders: ICategoryListData[],
+const applyMoviePagination = (
+  categoryOrders: IMovieListData[],
   page: number,
   limit: number
-): ICategoryListData[] => {
+): IMovieListData[] => {
   return categoryOrders.slice(page * limit, page * limit + limit);
 };
 
-const RecentOrdersTable: FC<ICategoryTableProps> = ({
-  categoryOrders,
+const RecentOrdersTable: FC<IMovieTableProps> = ({
+  movieOrders,
   page,
   limit,
   handleLimitChange,
   handlePageChange
 }) => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
   const [update] = useStatusAlert((state: IDataOpenAlert) => [state.update]);
 
-  const [selectedCategoryOrders, setSelectedCategoryOrders] = useState<
-    string[]
-  >([]);
+  const [selectedMovieOrders, setSelectedMovieOrders] = useState<string[]>([]);
 
-  const selectedBulkActions = selectedCategoryOrders.length > 0;
+  const selectedBulkActions = selectedMovieOrders.length > 0;
 
-  const handleSelectAllCategoryOrders = (
+  const handleSelectAllMovieOrders = (
     event: ChangeEvent<HTMLInputElement>
   ): void => {
-    setSelectedCategoryOrders(
-      event.target.checked
-        ? categoryOrders.map((categoryOrder) => categoryOrder.id)
-        : []
+    setSelectedMovieOrders(
+      event.target.checked ? movieOrders.map((movieOrder) => movieOrder.id) : []
     );
   };
 
-  const handleSelectOneCategoryOrder = (
+  const handleSelectOneMovieOrder = (
     event: ChangeEvent<HTMLInputElement>,
-    categoryOrderId: string
+    movieOrderId: string
   ): void => {
-    if (!selectedCategoryOrders.includes(categoryOrderId)) {
-      setSelectedCategoryOrders((prevSelected) => [
-        ...prevSelected,
-        categoryOrderId
-      ]);
+    if (!selectedMovieOrders.includes(movieOrderId)) {
+      setSelectedMovieOrders((prevSelected) => [...prevSelected, movieOrderId]);
     } else {
-      setSelectedCategoryOrders((prevSelected) =>
-        prevSelected.filter((id) => id !== categoryOrderId)
+      setSelectedMovieOrders((prevSelected) =>
+        prevSelected.filter((id) => id !== movieOrderId)
       );
     }
   };
-  const handleDetailCategory = async (id: string) => {
-    navigate(`/detail/category/${id}`);
-  };
 
-  const handleEditCategory = async (id: string) => {
-    navigate(`/edit/category/${id}`);
-  };
-
-  const handleDeleteCategory = async (id: string) => {
+  const handleDeleteMovie = async (id: string) => {
     try {
-      await deleteCategory({ id, accessToken: 'abc' });
+      await deleteMovie({ id, accessToken: 'abc' });
 
-      queryClient.invalidateQueries([QUERY_KEYS.CATEGORY_LIST]);
+      queryClient.invalidateQueries([QUERY_KEYS.MOVIE_LIST]);
 
       update({
-        message: `Delete Category Successfully`,
+        message: `Delete Movie Successfully`,
         severity: 'success',
         open: true
       });
@@ -127,24 +112,20 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({
     }
   };
 
-  const paginatedCategoryOrders = applyCatePagination(
-    categoryOrders,
-    page,
-    limit
-  );
+  const paginatedMovieOrders = applyMoviePagination(movieOrders, page, limit);
 
-  const selectedSomeCategoryOrders =
-    selectedCategoryOrders.length > 0 &&
-    selectedCategoryOrders.length < categoryOrders.length;
-  const selectedAllCategoryOrders =
-    selectedCategoryOrders.length === categoryOrders.length;
+  const selectedSomeMovieOrders =
+    selectedMovieOrders.length > 0 &&
+    selectedMovieOrders.length < movieOrders.length;
+  const selectedAllMovieOrders =
+    selectedMovieOrders.length === movieOrders.length;
   const theme = useTheme();
 
   return (
     <Card>
       {selectedBulkActions && (
         <Box flex={1} p={2}>
-          <BulkActions selectedCategoryOrders={selectedCategoryOrders} />
+          <BulkActions selectedMovieOrders={selectedMovieOrders} />
         </Box>
       )}
       <Divider />
@@ -155,36 +136,40 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({
               <TableCell padding="checkbox">
                 <Checkbox
                   color="primary"
-                  checked={selectedAllCategoryOrders}
-                  indeterminate={selectedSomeCategoryOrders}
-                  onChange={handleSelectAllCategoryOrders}
+                  checked={selectedAllMovieOrders}
+                  indeterminate={selectedSomeMovieOrders}
+                  onChange={handleSelectAllMovieOrders}
                 />
               </TableCell>
-              <TableCell>Category Name</TableCell>
+              <TableCell>Movie Name</TableCell>
+              <TableCell>Movie Description</TableCell>
+              <TableCell>Actor</TableCell>
+              <TableCell>Movie Poster</TableCell>
+              <TableCell>Category</TableCell>
               <TableCell>Create At</TableCell>
               <TableCell>Update At</TableCell>
               <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedCategoryOrders.map((categoryOrder) => {
-              const isCategoryOrderSelected = selectedCategoryOrders.includes(
-                categoryOrder.id
+            {paginatedMovieOrders.map((movieOrder) => {
+              const isMovieOrderSelected = selectedMovieOrders.includes(
+                movieOrder.id
               );
               return (
                 <TableRow
                   hover
-                  key={categoryOrder.id}
-                  selected={isCategoryOrderSelected}
+                  key={movieOrder.id}
+                  selected={isMovieOrderSelected}
                 >
                   <TableCell padding="checkbox">
                     <Checkbox
                       color="primary"
-                      checked={isCategoryOrderSelected}
+                      checked={isMovieOrderSelected}
                       onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        handleSelectOneCategoryOrder(event, categoryOrder.id)
+                        handleSelectOneMovieOrder(event, movieOrder.id)
                       }
-                      value={isCategoryOrderSelected}
+                      value={isMovieOrderSelected}
                     />
                   </TableCell>
                   <TableCell>
@@ -195,7 +180,7 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({
                       gutterBottom
                       noWrap
                     >
-                      {categoryOrder.name}
+                      {movieOrder.name}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -206,7 +191,7 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({
                       gutterBottom
                       noWrap
                     >
-                      {categoryOrder.created}
+                      {movieOrder.description}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -217,25 +202,46 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({
                       gutterBottom
                       noWrap
                     >
-                      {categoryOrder.updated}
+                      {movieOrder.actor}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <img title={movieOrder.name} src={movieOrder.poster} />
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {movieOrder.category}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {movieOrder.created}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {movieOrder.updated}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
-                    <Tooltip title="View Order" arrow>
-                      <IconButton
-                        sx={{
-                          '&:hover': {
-                            background: theme.colors.primary.lighter
-                          },
-                          color: theme.palette.primary.main
-                        }}
-                        color="inherit"
-                        size="small"
-                        onClick={() => handleDetailCategory(categoryOrder.id)}
-                      >
-                        <VisibilityTwoToneIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
                     <Tooltip title="Edit Order" arrow>
                       <IconButton
                         sx={{
@@ -246,7 +252,6 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({
                         }}
                         color="inherit"
                         size="small"
-                        onClick={() => handleEditCategory(categoryOrder.id)}
                       >
                         <EditTwoToneIcon fontSize="small" />
                       </IconButton>
@@ -261,7 +266,7 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({
                         }}
                         color="inherit"
                         size="small"
-                        onClick={() => handleDeleteCategory(categoryOrder.id)}
+                        onClick={() => handleDeleteMovie(movieOrder.id)}
                       >
                         <DeleteTwoToneIcon fontSize="small" />
                       </IconButton>
