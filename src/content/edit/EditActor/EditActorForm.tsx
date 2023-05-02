@@ -76,8 +76,7 @@ export const EditActorForm = () => {
       e.preventDefault();
 
       const response = (await addCategory({
-        ...values,
-        accessToken: 'abc'
+        ...values
       })) as ICreateCategoryDataResponse;
 
       if (response) {
