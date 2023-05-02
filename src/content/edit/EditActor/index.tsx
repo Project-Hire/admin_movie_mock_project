@@ -3,9 +3,9 @@ import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Grid, Container } from '@mui/material';
 import Footer from 'src/components/Footer';
-import { CreateCategoryForm } from './CreateCategoryForm';
+import { EditActorForm } from './EditActorForm';
 
-function CreateCategoryPage() {
+function EditActorPage() {
   return (
     <>
       <Helmet>
@@ -23,7 +23,7 @@ function CreateCategoryPage() {
           spacing={3}
         >
           <Grid item xs={12}>
-            <CreateCategoryForm />
+            <EditActorForm />
           </Grid>
         </Grid>
       </Container>
@@ -32,4 +32,4 @@ function CreateCategoryPage() {
   );
 }
 
-export default CreateCategoryPage;
+export default EditActorPage;

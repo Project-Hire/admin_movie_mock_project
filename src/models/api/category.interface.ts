@@ -23,3 +23,12 @@ export interface ICreateCategoryDataResponse {
   updated: string;
   name: string;
 }
+
+export interface IEditCategoryDataResponse {
+  id: string;
+  collectionId: string;
+  collectionName: string;
+  created: string;
+  updated: string;
+  name: string;
+}

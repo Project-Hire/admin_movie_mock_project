@@ -23,3 +23,12 @@ export interface ICreateActorDataResponse {
   name: string;
   avatar: string;
 }
+
+export interface IEditActorDataResponse {
+  id: string;
+  collectionId: string;
+  collectionName: string;
+  created: string;
+  name: string;
+  avatar: string;
+}

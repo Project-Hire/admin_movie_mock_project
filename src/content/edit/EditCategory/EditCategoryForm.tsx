@@ -16,7 +16,7 @@ interface State {
   name: string;
 }
 
-export const CreateCategoryForm = () => {
+export const EditCategoryForm = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [update] = useStatusAlert((state: IDataOpenAlert) => [state.update]);
@@ -95,7 +95,7 @@ export const CreateCategoryForm = () => {
       <Box
         component="form"
         sx={{
-          '& .MuiTextField-root': { m: 1, width: '25ch' }
+          '& .MuiTextField-root': { m: 1, width: '75ch' }
         }}
         noValidate
         autoComplete="off"
@@ -112,7 +112,7 @@ export const CreateCategoryForm = () => {
           onChange={handleChange('name')}
         />
         <Button sx={{ margin: 1 }} variant="contained" type="submit">
-          Create
+          Save
         </Button>
       </Box>
     </Card>
