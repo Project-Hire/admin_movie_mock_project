@@ -110,7 +110,7 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({
 
   const handleDeleteCategory = async (id: string) => {
     try {
-      await deleteCategory({ id, accessToken: 'abc' });
+      await deleteCategory({ id });
 
       queryClient.invalidateQueries([QUERY_KEYS.CATEGORY_LIST]);
 

@@ -36,8 +36,7 @@ export const DetailActor = () => {
     [QUERY_KEYS.ACTOR_DETAIL, id],
     async () => {
       const response = await getActorData({
-        id,
-        accessToken: 'abc'
+        id
       });
 
       return response;

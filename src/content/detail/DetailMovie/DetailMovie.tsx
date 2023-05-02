@@ -36,8 +36,7 @@ export const DetailMovie = () => {
     [QUERY_KEYS.ACTOR_DETAIL, id],
     async () => {
       const response = await getMovieData({
-        id,
-        accessToken: 'abc'
+        id
       });
 
       return response;

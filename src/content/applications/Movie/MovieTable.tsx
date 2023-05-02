@@ -105,7 +105,7 @@ const RecentOrdersTable: FC<IMovieTableProps> = ({
 
   const handleDeleteMovie = async (id: string) => {
     try {
-      await deleteMovie({ id, accessToken: 'abc' });
+      await deleteMovie({ id });
 
       queryClient.invalidateQueries([QUERY_KEYS.MOVIE_LIST]);
 

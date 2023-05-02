@@ -1,4 +1,5 @@
 export const API_BASE_URL = 'http://127.0.0.1:8090';
+import { fetchDataAuth } from '.';
 
 export const getActorList = async (input: {
   limit: number;
@@ -24,70 +25,43 @@ export const getActorList = async (input: {
   }
 };
 
-export const addActor = async (input: {
-  name: string;
-  avatar: string;
-  accessToken: string;
-}) => {
+export const addActor = async (input: { name: string; avatar: string }) => {
   try {
-    const { name, avatar, accessToken } = input;
+    const { name, avatar } = input;
 
     if (!name || name === '') {
       return { success: false, data: null, message: 'Invalid Name' };
     }
 
-    if (!accessToken || accessToken === '') {
-      return { success: false, data: null, message: 'Invalid Access Token' };
-    }
-
-    const response = await fetch(
+    const response = await fetchDataAuth(
       `${API_BASE_URL}/api/collections/actors/records`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`
-        },
-        body: JSON.stringify({ name, avatar })
-      }
+      'POST',
+      { name, avatar },
+      {}
     );
 
-    const rawResponse = await response.json();
-
-    return rawResponse;
+    return response;
   } catch (error: any) {
     return { success: false, data: null, message: error.message };
   }
 };
 
-export const deleteActor = async (input: {
-  id: string;
-  accessToken: string;
-}) => {
+export const deleteActor = async (input: { id: string }) => {
   try {
-    const { id, accessToken } = input;
+    const { id } = input;
 
     if (!id || id === '') {
       return { success: false, data: null, message: 'Invalid Id' };
     }
 
-    if (!accessToken || accessToken === '') {
-      return { success: false, data: null, message: 'Invalid Access Token' };
-    }
-
-    const response = await fetch(
+    const response = await fetchDataAuth(
       `${API_BASE_URL}/api/collections/actors/records/${id}`,
-      {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
-      }
+      'DELETE',
+      { id },
+      {}
     );
 
-    const rawResponse = await response.json();
-
-    return rawResponse;
+    return response;
   } catch (error: any) {
     return { success: false, data: null, message: error.message };
   }
@@ -97,67 +71,43 @@ export const updateActor = async (input: {
   id: string;
   name: string;
   avatar: string;
-  accessToken: string;
 }) => {
   try {
-    const { id, name, avatar, accessToken } = input;
+    const { id, name, avatar } = input;
 
     if (!id || id === '') {
       return { success: false, data: null, message: 'Invalid Id' };
     }
 
-    if (!accessToken || accessToken === '') {
-      return { success: false, data: null, message: 'Invalid Access Token' };
-    }
-
-    const response = await fetch(
+    const response = await fetchDataAuth(
       `${API_BASE_URL}/api/collections/actors/records/${id}`,
-      {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`
-        },
-        body: JSON.stringify({ name, avatar })
-      }
+      'POST',
+      { id, name, avatar },
+      {}
     );
 
-    const rawResponse = await response.json();
-
-    return rawResponse;
+    return response;
   } catch (error: any) {
     return { success: false, data: null, message: error.message };
   }
 };
 
-export const getActorData = async (input: {
-  id: string;
-  accessToken: string;
-}) => {
+export const getActorData = async (input: { id: string }) => {
   try {
-    const { id, accessToken } = input;
+    const { id } = input;
 
     if (!id || id === '') {
       return { success: false, data: null, message: 'Invalid Id' };
     }
 
-    if (!accessToken || accessToken === '') {
-      return { success: false, data: null, message: 'Invalid Access Token' };
-    }
-
-    const response = await fetch(
+    const response = await fetchDataAuth(
       `${API_BASE_URL}/api/collections/actors/records/${id}`,
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
-      }
+      'POST',
+      { id },
+      {}
     );
 
-    const rawResponse = await response.json();
-
-    return rawResponse;
+    return response;
   } catch (error: any) {
     return { success: false, data: null, message: error.message };
   }

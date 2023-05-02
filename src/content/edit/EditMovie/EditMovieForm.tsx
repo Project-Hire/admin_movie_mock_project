@@ -70,8 +70,7 @@ export const EditMovieForm = () => {
     [QUERY_KEYS.ACTOR_DETAIL, id],
     async () => {
       const response = await getMovieData({
-        id,
-        accessToken: 'abc'
+        id
       });
 
       return response;
@@ -141,8 +140,7 @@ export const EditMovieForm = () => {
       e.preventDefault();
 
       const response = (await updateMovie({
-        ...values,
-        accessToken: 'abc'
+        ...values
       })) as IEditMovieDataResponse;
 
       if (response) {

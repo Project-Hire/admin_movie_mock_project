@@ -51,104 +51,64 @@ export const addCategory = async (input: { name: string }) => {
   }
 };
 
-export const deleteCategory = async (input: {
-  id: string;
-  accessToken: string;
-}) => {
+export const deleteCategory = async (input: { id: string }) => {
   try {
-    const { id, accessToken } = input;
+    const { id } = input;
 
     if (!id || id === '') {
       return { success: false, data: null, message: 'Invalid Id' };
     }
 
-    if (!accessToken || accessToken === '') {
-      return { success: false, data: null, message: 'Invalid Access Token' };
-    }
-
-    const response = await fetch(
+    const response = await fetchDataAuth(
       `${API_BASE_URL}/api/collections/categories/records/${id}`,
-      {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
-      }
+      'DELETE',
+      { id },
+      {}
     );
 
-    const rawResponse = response.json();
-
-    return await rawResponse;
+    return response;
   } catch (error: any) {
     return { success: false, data: null, message: error.message };
   }
 };
 
-export const updateCategory = async (input: {
-  id: string;
-  name: string;
-  accessToken: string;
-}) => {
+export const updateCategory = async (input: { id: string; name: string }) => {
   try {
-    const { id, name, accessToken } = input;
+    const { id, name } = input;
 
     if (!id || id === '') {
       return { success: false, data: null, message: 'Invalid Id' };
     }
 
-    if (!accessToken || accessToken === '') {
-      return { success: false, data: null, message: 'Invalid Access Token' };
-    }
-
-    const response = await fetch(
+    const response = await fetchDataAuth(
       `${API_BASE_URL}/api/collections/categories/records/${id}`,
-      {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`
-        },
-        body: JSON.stringify({ name })
-      }
+      'PATCH',
+      { name },
+      {}
     );
 
-    const rawResponse = await response.json();
-
-    return rawResponse;
+    return response;
   } catch (error: any) {
     return { success: false, data: null, message: error.message };
   }
 };
 
-export const getCategoryData = async (input: {
-  id: string;
-  accessToken: string;
-}) => {
+export const getCategoryData = async (input: { id: string }) => {
   try {
-    const { id, accessToken } = input;
+    const { id } = input;
 
     if (!id || id === '') {
       return { success: false, data: null, message: 'Invalid Id' };
     }
 
-    if (!accessToken || accessToken === '') {
-      return { success: false, data: null, message: 'Invalid Access Token' };
-    }
-
-    const response = await fetch(
+    const response = await fetchDataAuth(
       `${API_BASE_URL}/api/collections/categories/records/${id}`,
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
-      }
+      'GET',
+      { id },
+      {}
     );
 
-    console.log('Response:', response);
-    const rawResponse = await response.json();
-
-    return rawResponse;
+    return response;
   } catch (error: any) {
     return { success: false, data: null, message: error.message };
   }

@@ -35,8 +35,7 @@ export const EditCategoryForm = () => {
     [QUERY_KEYS.CATEGORY_DETAIL, id],
     async () => {
       const response = await getCategoryData({
-        id,
-        accessToken: 'abc'
+        id
       });
 
       return response;
@@ -62,8 +61,7 @@ export const EditCategoryForm = () => {
       e.preventDefault();
 
       const response = (await updateCategory({
-        ...values,
-        accessToken: 'abc'
+        ...values
       })) as ICreateCategoryDataResponse;
 
       if (response) {

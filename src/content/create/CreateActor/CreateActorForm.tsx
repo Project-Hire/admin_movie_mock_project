@@ -52,8 +52,7 @@ export const CreateActorForm = () => {
       e.preventDefault();
 
       const response = (await addActor({
-        ...values,
-        accessToken: 'abc'
+        ...values
       })) as ICreateActorDataResponse;
 
       if (response) {
