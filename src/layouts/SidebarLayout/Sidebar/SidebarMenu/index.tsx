@@ -286,10 +286,10 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/management/profile/details"
-                  startIcon={<AccountCircleTwoToneIcon />}
+                  to="/create/actor"
+                  startIcon={<DisplaySettingsTwoToneIcon />}
                 >
-                  User Profile
+                  Actor
                 </Button>
               </ListItem>
               <ListItem component="div">
@@ -297,10 +297,102 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/management/profile/settings"
+                  to="/create/movie"
                   startIcon={<DisplaySettingsTwoToneIcon />}
                 >
-                  Account Settings
+                  Movie
+                </Button>
+              </ListItem>
+            </List>
+          </SubMenuWrapper>
+        </List>
+        <List
+          component="div"
+          subheader={
+            <ListSubheader component="div" disableSticky>
+              Edit Pages
+            </ListSubheader>
+          }
+        >
+          <SubMenuWrapper>
+            <List component="div">
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/edit/category"
+                  startIcon={<DisplaySettingsTwoToneIcon />}
+                >
+                  Category
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/edit/actor"
+                  startIcon={<DisplaySettingsTwoToneIcon />}
+                >
+                  Actor
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/edit/movie"
+                  startIcon={<DisplaySettingsTwoToneIcon />}
+                >
+                  Movie
+                </Button>
+              </ListItem>
+            </List>
+          </SubMenuWrapper>
+        </List>
+        <List
+          component="div"
+          subheader={
+            <ListSubheader component="div" disableSticky>
+              View Detail Pages
+            </ListSubheader>
+          }
+        >
+          <SubMenuWrapper>
+            <List component="div">
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/detail/category"
+                  startIcon={<DisplaySettingsTwoToneIcon />}
+                >
+                  Category
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/detail/actor"
+                  startIcon={<DisplaySettingsTwoToneIcon />}
+                >
+                  Actor
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/detail/movie"
+                  startIcon={<DisplaySettingsTwoToneIcon />}
+                >
+                  Movie
                 </Button>
               </ListItem>
             </List>
