@@ -30,18 +30,25 @@ export const CreateCategoryForm = () => {
       e.preventDefault();
 
       const response = (await addCategory({
-        ...values,
-        accessToken: 'abc'
+        ...values
       })) as ICreateCategoryDataResponse;
 
       if (response) {
-        queryClient.invalidateQueries([QUERY_KEYS.CATEGORY_LIST]);
-        navigate('/management/category');
-        update({
-          message: `Create Category Name: ${response.name} Successfully`,
-          severity: 'success',
-          open: true
-        });
+        if (response?.code) {
+          update({
+            message: response.message,
+            severity: 'error',
+            open: true
+          });
+        } else {
+          queryClient.invalidateQueries([QUERY_KEYS.CATEGORY_LIST]);
+          navigate('/management/category');
+          update({
+            message: `Create Category Name: ${response.name} Successfully`,
+            severity: 'success',
+            open: true
+          });
+        }
       } else {
         update({
           message: 'Create Category Fail',

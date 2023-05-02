@@ -2,6 +2,7 @@ import {
   ICategoryListDataResponse,
   ICreateCategoryDataResponse
 } from 'src/models/api/category.interface';
+import { fetchDataAuth } from '.';
 
 export const API_BASE_URL = 'http://127.0.0.1:8090';
 
@@ -29,36 +30,22 @@ export const getCategoryList = async (input: {
   }
 };
 
-export const addCategory = async (input: {
-  name: string;
-  accessToken: string;
-}) => {
+export const addCategory = async (input: { name: string }) => {
   try {
-    const { name, accessToken } = input;
+    const { name } = input;
 
     if (!name || name === '') {
       return { success: false, data: null, message: 'Invalid Name' };
     }
 
-    if (!accessToken || accessToken === '') {
-      return { success: false, data: null, message: 'Invalid Access Token' };
-    }
-
-    const response = await fetch(
+    const response = await fetchDataAuth(
       `${API_BASE_URL}/api/collections/categories/records`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`
-        },
-        body: JSON.stringify({ name })
-      }
+      'POST',
+      { name },
+      {}
     );
 
-    const rawResponse = (await response.json()) as ICreateCategoryDataResponse;
-
-    return rawResponse;
+    return response;
   } catch (error: any) {
     return { success: false, data: null, message: error.message };
   }

@@ -79,7 +79,7 @@ function LoginPage() {
 
       if (authData) {
         localStorage.setItem(USER_INFO, JSON.stringify(authData.admin));
-        localStorage.setItem(AUTH_TOKEN, JSON.stringify(authData.token));
+        localStorage.setItem(AUTH_TOKEN, authData.token);
 
         navigate('/management/category');
 
