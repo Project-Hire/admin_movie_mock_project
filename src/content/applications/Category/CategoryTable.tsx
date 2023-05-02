@@ -99,6 +99,7 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({
       );
     }
   };
+
   const handleDetailCategory = async (id: string) => {
     navigate(`/detail/category/${id}`);
   };

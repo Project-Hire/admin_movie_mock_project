@@ -34,11 +34,13 @@ import {
 } from 'src/models/api/movie.interface';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
 import BulkActions from './BulkActions';
 import { IDataOpenAlert, useStatusAlert } from 'src/stores/useStatusAlert';
 import { deleteMovie } from 'src/utils/api/movie';
 import { useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from 'src/models/key';
+import { useNavigate } from 'react-router';
 
 interface IMovieTableProps {
   className?: string;
@@ -65,6 +67,7 @@ const RecentOrdersTable: FC<IMovieTableProps> = ({
   handlePageChange
 }) => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const [update] = useStatusAlert((state: IDataOpenAlert) => [state.update]);
 
   const [selectedMovieOrders, setSelectedMovieOrders] = useState<string[]>([]);
@@ -90,6 +93,14 @@ const RecentOrdersTable: FC<IMovieTableProps> = ({
         prevSelected.filter((id) => id !== movieOrderId)
       );
     }
+  };
+
+  const handleDetailMovie = async (id: string) => {
+    navigate(`/detail/movie/${id}`);
+  };
+
+  const handleEditMovie = async (id: string) => {
+    navigate(`/edit/movie/${id}`);
   };
 
   const handleDeleteMovie = async (id: string) => {
@@ -242,6 +253,21 @@ const RecentOrdersTable: FC<IMovieTableProps> = ({
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
+                    <Tooltip title="View Order" arrow>
+                      <IconButton
+                        sx={{
+                          '&:hover': {
+                            background: theme.colors.primary.lighter
+                          },
+                          color: theme.palette.primary.main
+                        }}
+                        color="inherit"
+                        size="small"
+                        onClick={() => handleDetailMovie(movieOrder.id)}
+                      >
+                        <VisibilityTwoToneIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
                     <Tooltip title="Edit Order" arrow>
                       <IconButton
                         sx={{
@@ -252,6 +278,7 @@ const RecentOrdersTable: FC<IMovieTableProps> = ({
                         }}
                         color="inherit"
                         size="small"
+                        onClick={() => handleEditMovie(movieOrder.id)}
                       >
                         <EditTwoToneIcon fontSize="small" />
                       </IconButton>

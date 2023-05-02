@@ -32,12 +32,14 @@ import {
   IActorListData
 } from 'src/models/api/actor.interface';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
+import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import BulkActions from './BulkActions';
 import { IDataOpenAlert, useStatusAlert } from 'src/stores/useStatusAlert';
 import { deleteActor } from 'src/utils/api/actor';
 import { useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from 'src/models/key';
+import { useNavigate } from 'react-router';
 
 interface IActorTableProps {
   className?: string;
@@ -64,6 +66,7 @@ const RecentOrdersTable: FC<IActorTableProps> = ({
   handlePageChange
 }) => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const [update] = useStatusAlert((state: IDataOpenAlert) => [state.update]);
 
   const [selectedActorOrders, setSelectedActorOrders] = useState<string[]>([]);
@@ -89,6 +92,14 @@ const RecentOrdersTable: FC<IActorTableProps> = ({
         prevSelected.filter((id) => id !== actorOrderId)
       );
     }
+  };
+
+  const handleDetailActor = async (id: string) => {
+    navigate(`/detail/actor/${id}`);
+  };
+
+  const handleEditActor = async (id: string) => {
+    navigate(`/edit/actor/${id}`);
   };
 
   const handleDeleteActor = async (id: string) => {
@@ -180,7 +191,7 @@ const RecentOrdersTable: FC<IActorTableProps> = ({
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <img title={ActorOrder.name} src={ActorOrder.avatar}/>
+                    <img title={ActorOrder.name} src={ActorOrder.avatar} />
                   </TableCell>
                   <TableCell>
                     <Typography
@@ -205,6 +216,21 @@ const RecentOrdersTable: FC<IActorTableProps> = ({
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
+                    <Tooltip title="View Order" arrow>
+                      <IconButton
+                        sx={{
+                          '&:hover': {
+                            background: theme.colors.primary.lighter
+                          },
+                          color: theme.palette.primary.main
+                        }}
+                        color="inherit"
+                        size="small"
+                        onClick={() => handleDetailActor(ActorOrder.id)}
+                      >
+                        <VisibilityTwoToneIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
                     <Tooltip title="Edit Order" arrow>
                       <IconButton
                         sx={{
@@ -215,6 +241,7 @@ const RecentOrdersTable: FC<IActorTableProps> = ({
                         }}
                         color="inherit"
                         size="small"
+                        onClick={() => handleEditActor(ActorOrder.id)}
                       >
                         <EditTwoToneIcon fontSize="small" />
                       </IconButton>
