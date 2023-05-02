@@ -11,23 +11,25 @@ import {
 import { styled } from '@mui/material/styles';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { IDataOpenAlert, useStatusAlert } from 'src/stores/useStatusAlert';
-import { getCategoryList } from 'src/utils/api/category';
+import { addCategory, getCategoryList } from 'src/utils/api/category';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from 'src/models/key';
-import { useNavigate } from 'react-router';
+import { Navigate, useNavigate, useParams } from 'react-router';
 import {
   ICategoryListData,
-  ICategoryListDataResponse
+  ICategoryListDataResponse,
+  ICreateCategoryDataResponse
 } from 'src/models/api/category.interface';
+import { getMovieData, updateMovie } from 'src/utils/api/movie';
+import { IEditMovieDataResponse } from 'src/models/api/movie.interface';
 import { getActorList } from 'src/utils/api/actor';
 import {
   IActorListData,
   IActorListDataResponse
 } from 'src/models/api/actor.interface';
-import { addMovie } from 'src/utils/api/movie';
-import { ICreateMovieDataResponse } from 'src/models/api/movie.interface';
 
 interface State {
+  id: string;
   name: string;
   description: string;
   actor_id: string;
@@ -39,7 +41,7 @@ const Input = styled('input')({
   display: 'none'
 });
 
-export const CreateMovieForm = () => {
+export const EditMovieForm = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [update] = useStatusAlert((state: IDataOpenAlert) => [state.update]);
@@ -49,13 +51,41 @@ export const CreateMovieForm = () => {
   const [categories, setCategories] = useState<string[]>([]);
   const [actors, setActors] = useState<string[]>([]);
 
+  const { id } = useParams();
+
   const [values, setValues] = useState<State>({
+    id: id,
     name: '',
     description: '',
     actor_id: '',
     poster: '',
     category_id: ''
   });
+
+  const {
+    data: movieDetail,
+    isError,
+    isFetching
+  } = useQuery(
+    [QUERY_KEYS.ACTOR_DETAIL, id],
+    async () => {
+      const response = await getMovieData({
+        id,
+        accessToken: 'abc'
+      });
+
+      return response;
+    },
+    {
+      enabled: !!id,
+      refetchInterval: false,
+      refetchOnWindowFocus: false
+    }
+  );
+
+  if (!isFetching && (isError || typeof movieDetail === 'undefined')) {
+    return <Navigate to={'/404'} replace />;
+  }
 
   const { data: category } = useQuery(
     [QUERY_KEYS.CATEGORY_LIST, page, limit, keyword],
@@ -110,22 +140,22 @@ export const CreateMovieForm = () => {
     try {
       e.preventDefault();
 
-      const response = (await addMovie({
+      const response = (await updateMovie({
         ...values,
         accessToken: 'abc'
-      })) as ICreateMovieDataResponse;
+      })) as IEditMovieDataResponse;
 
       if (response) {
         queryClient.invalidateQueries([QUERY_KEYS.MOVIE_LIST]);
         navigate('/management/movie');
         update({
-          message: `Create Movie Name: ${response.name} Successfully`,
+          message: `Edit Movie Name: ${response.name} Successfully`,
           severity: 'success',
           open: true
         });
       } else {
         update({
-          message: 'Create Movie Fail',
+          message: 'Edit Movie Fail',
           severity: 'error',
           open: true
         });
@@ -158,7 +188,7 @@ export const CreateMovieForm = () => {
             id="outlined-required"
             name="name"
             label="Name"
-            defaultValue={values.name}
+            defaultValue={movieDetail.name}
             onChange={handleChange('name')}
           />
         </Box>
@@ -168,7 +198,7 @@ export const CreateMovieForm = () => {
             id="outlined-required"
             name="description"
             label="Description"
-            defaultValue={values.description}
+            defaultValue={movieDetail.description}
             onChange={handleChange('description')}
           />
         </Box>
@@ -244,7 +274,7 @@ export const CreateMovieForm = () => {
         </Box>
         <Box>
           <Button sx={{ margin: 1 }} variant="contained" type="submit">
-            Create
+            Save
           </Button>
         </Box>
       </Box>

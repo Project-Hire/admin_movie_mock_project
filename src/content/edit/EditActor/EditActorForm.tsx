@@ -13,34 +13,58 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
 import { IDataOpenAlert, useStatusAlert } from 'src/stores/useStatusAlert';
 import { addCategory } from 'src/utils/api/category';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from 'src/models/key';
-import { useNavigate } from 'react-router';
+import { Navigate, useNavigate, useParams } from 'react-router';
 import { ICreateCategoryDataResponse } from 'src/models/api/category.interface';
-import { addActor } from 'src/utils/api/actor';
-import { ICreateActorDataResponse } from 'src/models/api/actor.interface';
+import { getActorData } from 'src/utils/api/actor';
 
 interface State {
+  id: string;
   name: string;
-  avatar: string;
 }
 
 const Input = styled('input')({
   display: 'none'
 });
 
-export const CreateActorForm = () => {
+export const EditActorForm = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [update] = useStatusAlert((state: IDataOpenAlert) => [state.update]);
+  const { id } = useParams();
 
   const [values, setValues] = useState<State>({
-    name: '',
-    avatar: ''
+    id: id,
+    name: ''
   });
+
+  const {
+    data: actorDetail,
+    isError,
+    isFetching
+  } = useQuery(
+    [QUERY_KEYS.ACTOR_DETAIL, id],
+    async () => {
+      const response = await getActorData({
+        id,
+        accessToken: 'abc'
+      });
+
+      return response;
+    },
+    {
+      enabled: !!id,
+      refetchInterval: false,
+      refetchOnWindowFocus: false
+    }
+  );
+
+  if (!isFetching && (isError || typeof actorDetail === 'undefined')) {
+    return <Navigate to={'/404'} replace />;
+  }
 
   const handleChange =
     (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -51,22 +75,22 @@ export const CreateActorForm = () => {
     try {
       e.preventDefault();
 
-      const response = (await addActor({
+      const response = (await addCategory({
         ...values,
         accessToken: 'abc'
-      })) as ICreateActorDataResponse;
+      })) as ICreateCategoryDataResponse;
 
       if (response) {
-        queryClient.invalidateQueries([QUERY_KEYS.ACTOR_LIST]);
+        queryClient.invalidateQueries([QUERY_KEYS.CATEGORY_LIST]);
         navigate('/management/actor');
         update({
-          message: `Create Actor Information Name: ${response.name} Successfully`,
+          message: `Edit Information Actor Name: ${response.name} Successfully`,
           severity: 'success',
           open: true
         });
       } else {
         update({
-          message: 'Create Actor Fail',
+          message: 'Edit Information Actor Fail',
           severity: 'error',
           open: true
         });
@@ -85,7 +109,7 @@ export const CreateActorForm = () => {
       <Box
         component="form"
         sx={{
-          '& .MuiTextField-root': { m: 1, width: '75ch' }
+          '& .MuiTextField-root': { m: 1, width: '25ch' }
         }}
         noValidate
         autoComplete="off"
@@ -99,7 +123,7 @@ export const CreateActorForm = () => {
             id="outlined-required"
             name="name"
             label="Name"
-            defaultValue={values.name}
+            defaultValue={actorDetail.name}
             onChange={handleChange('name')}
           />
         </Box>
@@ -130,7 +154,7 @@ export const CreateActorForm = () => {
         </Box>
         <Box>
           <Button sx={{ margin: 1 }} variant="contained" type="submit">
-            Create
+            Save
           </Button>
         </Box>
       </Box>
