@@ -164,7 +164,7 @@ export const CreateMovieForm = () => {
         />
         {actor && (
           <TextField
-            label="Select country"
+            label="Select actor"
             select
             SelectProps={{
               multiple: true
@@ -192,7 +192,7 @@ export const CreateMovieForm = () => {
         </ButtonBase>
         {category && (
           <TextField
-            label="Select country"
+            label="Select category"
             select
             SelectProps={{
               multiple: true

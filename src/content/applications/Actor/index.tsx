@@ -3,10 +3,10 @@ import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Grid, Container } from '@mui/material';
 import Footer from 'src/components/Footer';
 
-import Category from './Actor';
+import Actor from './Actor';
 import PageHeader from './PageHeader';
 
-function ApplicationsCategory() {
+function ApplicationsActor() {
   return (
     <>
       <Helmet>
@@ -24,7 +24,7 @@ function ApplicationsCategory() {
           spacing={3}
         >
           <Grid item xs={12}>
-            <Category />
+            <Actor />
           </Grid>
         </Grid>
       </Container>
@@ -33,4 +33,4 @@ function ApplicationsCategory() {
   );
 }
 
-export default ApplicationsCategory;
+export default ApplicationsActor;

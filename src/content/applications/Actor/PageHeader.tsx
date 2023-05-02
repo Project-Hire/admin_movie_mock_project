@@ -13,20 +13,20 @@ function PageHeader() {
     <Grid container justifyContent="space-between" alignItems="center">
       <Grid item>
         <Typography variant="h3" component="h3" gutterBottom>
-          Categories
+          Actors
         </Typography>
         <Typography variant="subtitle2">
-          {user.name}, these are your recent categories
+          {user.name}, these are your recent actor information
         </Typography>
       </Grid>
       <Grid item>
-        <Link to={'/create/category'}>
+        <Link to={'/create/actor'}>
           <Button
             sx={{ mt: { xs: 2, md: 0 } }}
             variant="contained"
             startIcon={<AddTwoToneIcon fontSize="small" />}
           >
-            Create Category
+            Create actor information
           </Button>
         </Link>
       </Grid>

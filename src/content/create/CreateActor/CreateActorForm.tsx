@@ -19,6 +19,7 @@ import { QUERY_KEYS } from 'src/models/key';
 import { useNavigate } from 'react-router';
 import { ICreateCategoryDataResponse } from 'src/models/api/category.interface';
 import { addActor } from 'src/utils/api/actor';
+import { ICreateActorDataResponse } from 'src/models/api/actor.interface';
 
 interface State {
   name: string;
@@ -69,7 +70,7 @@ const ButtonUploadWrapper = styled(Box)(
 `
 );
 
-export const CreateCategoryForm = () => {
+export const CreateActorForm = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [update] = useStatusAlert((state: IDataOpenAlert) => [state.update]);
@@ -91,19 +92,19 @@ export const CreateCategoryForm = () => {
       const response = (await addActor({
         ...values,
         accessToken: 'abc'
-      })) as ICreateCategoryDataResponse;
+      })) as ICreateActorDataResponse;
 
       if (response) {
-        queryClient.invalidateQueries([QUERY_KEYS.CATEGORY_LIST]);
-        navigate('/management/category');
+        queryClient.invalidateQueries([QUERY_KEYS.ACTOR_LIST]);
+        navigate('/management/actor');
         update({
-          message: `Create Category Name: ${response.name} Successfully`,
+          message: `Create Actor Information Name: ${response.name} Successfully`,
           severity: 'success',
           open: true
         });
       } else {
         update({
-          message: 'Create Category Fail',
+          message: 'Create Actor Fail',
           severity: 'error',
           open: true
         });
