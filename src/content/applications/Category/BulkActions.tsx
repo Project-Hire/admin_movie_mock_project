@@ -60,8 +60,7 @@ function BulkActions({ selectedCategoryOrders }: Props) {
       const promises = selectedCategoryOrders.map(
         async (selectedCategory: string) => {
           await deleteCategory({
-            id: selectedCategory,
-            accessToken: 'abc'
+            id: selectedCategory
           });
         }
       );
