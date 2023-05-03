@@ -114,7 +114,7 @@ export const EditActorForm = () => {
         noValidate
         autoComplete="off"
         padding={3}
-        style={{ display: 'flex', alignItems: 'center' }}
+        style={{ alignItems: 'center' }}
         onSubmit={onSubmit}
       >
         <Box>

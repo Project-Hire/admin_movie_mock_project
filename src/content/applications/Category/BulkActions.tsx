@@ -72,13 +72,13 @@ function BulkActions({ selectedCategoryOrders }: Props) {
           queryClient.invalidateQueries([QUERY_KEYS.CATEGORY_LIST]);
 
           update({
-            message: `Delete Category Successfully`,
+            message: `Delete Categories Successfully`,
             severity: 'success',
             open: true
           });
         } else {
           update({
-            message: `Delete Category Fail`,
+            message: `Delete Categories Fail`,
             severity: 'error',
             open: true
           });

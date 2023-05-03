@@ -218,7 +218,6 @@ export const EditMovieForm = () => {
               SelectProps={{
                 multiple: true
               }}
-              size="small"
               color="secondary"
               helperText="Please select actor"
               value={actors}
@@ -239,7 +238,6 @@ export const EditMovieForm = () => {
               SelectProps={{
                 multiple: true
               }}
-              size="small"
               color="secondary"
               helperText="Please select categories of movie"
               value={categories}
