@@ -12,8 +12,6 @@ import {
   IconButton
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
 import { IDataOpenAlert, useStatusAlert } from 'src/stores/useStatusAlert';
 import { addCategory } from 'src/utils/api/category';
 import { useQueryClient } from '@tanstack/react-query';
@@ -27,10 +25,6 @@ interface State {
   name: string;
   avatar: string;
 }
-
-const Input = styled('input')({
-  display: 'none'
-});
 
 export const CreateActorForm = () => {
   const navigate = useNavigate();
@@ -89,7 +83,7 @@ export const CreateActorForm = () => {
         noValidate
         autoComplete="off"
         padding={3}
-        style={{ display: 'flex', alignItems: 'center' }}
+        style={{ alignItems: 'center' }}
         onSubmit={onSubmit}
       >
         <Box>
@@ -103,29 +97,14 @@ export const CreateActorForm = () => {
           />
         </Box>
         <Box>
-          <Stack direction="row" alignItems="center" sx={{ margin: 1 }}>
-            <label htmlFor="contained-button-file">
-              <Input
-                accept="image/*"
-                id="contained-button-file"
-                multiple
-                type="file"
-              />
-              <Button variant="contained" component="span">
-                Upload
-              </Button>
-            </label>
-            <label htmlFor="icon-button-file">
-              <Input accept="image/*" id="icon-button-file" type="file" />
-              <IconButton
-                color="primary"
-                aria-label="upload picture"
-                component="span"
-              >
-                <PhotoCamera />
-              </IconButton>
-            </label>
-          </Stack>
+          <TextField
+            required
+            id="outlined-required"
+            name="avatar"
+            label="Avatar"
+            defaultValue={values.avatar}
+            onChange={handleChange('avatar')}
+          />
         </Box>
         <Box>
           <Button sx={{ margin: 1 }} variant="contained" type="submit">
