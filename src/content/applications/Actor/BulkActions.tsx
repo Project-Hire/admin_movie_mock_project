@@ -14,6 +14,10 @@ import { styled } from '@mui/material/styles';
 
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
+import { useQueryClient } from '@tanstack/react-query';
+import { deleteActor } from 'src/utils/api/actor';
+import { IDataOpenAlert, useStatusAlert } from 'src/stores/useStatusAlert';
+import { QUERY_KEYS } from 'src/models/key';
 
 interface Props {
   selectedActorOrders: string[];
@@ -31,6 +35,9 @@ const ButtonError = styled(Button)(
 );
 
 function BulkActions({ selectedActorOrders }: Props) {
+  const queryClient = useQueryClient();
+  const [update] = useStatusAlert((state: IDataOpenAlert) => [state.update]);
+
   const [onMenuOpen, menuOpen] = useState<boolean>(false);
   const moreRef = useRef<HTMLButtonElement | null>(null);
 
@@ -42,8 +49,48 @@ function BulkActions({ selectedActorOrders }: Props) {
     menuOpen(false);
   };
 
-  const handleDelete = () => {
-    console.log(selectedActorOrders);
+  const handleDelete = async () => {
+    if (selectedActorOrders.length === 0) {
+      update({
+        message: `Please select the actor to delete`,
+        severity: 'success',
+        open: true
+      });
+    } else {
+      const promises = selectedActorOrders.map(
+        async (selectedActor: string) => {
+          await deleteActor({
+            id: selectedActor
+          });
+        }
+      );
+
+      try {
+        const results = await Promise.all(promises);
+
+        if (results) {
+          queryClient.invalidateQueries([QUERY_KEYS.ACTOR_LIST]);
+
+          update({
+            message: `Delete Actors Successfully`,
+            severity: 'success',
+            open: true
+          });
+        } else {
+          update({
+            message: `Delete Actors Fail`,
+            severity: 'error',
+            open: true
+          });
+        }
+      } catch (error) {
+        update({
+          message: error.message,
+          severity: 'error',
+          open: true
+        });
+      }
+    }
   };
 
   return (

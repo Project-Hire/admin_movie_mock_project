@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-
+import { useQueryClient } from '@tanstack/react-query';
 import {
   Box,
   Menu,
@@ -14,7 +14,9 @@ import { styled } from '@mui/material/styles';
 
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
-
+import { IDataOpenAlert, useStatusAlert } from 'src/stores/useStatusAlert';
+import { QUERY_KEYS } from 'src/models/key';
+import { deleteMovie } from 'src/utils/api/movie';
 interface Props {
   selectedMovieOrders: string[];
 }
@@ -31,6 +33,9 @@ const ButtonError = styled(Button)(
 );
 
 function BulkActions({ selectedMovieOrders }: Props) {
+  const queryClient = useQueryClient();
+  const [update] = useStatusAlert((state: IDataOpenAlert) => [state.update]);
+
   const [onMenuOpen, menuOpen] = useState<boolean>(false);
   const moreRef = useRef<HTMLButtonElement | null>(null);
 
@@ -42,8 +47,48 @@ function BulkActions({ selectedMovieOrders }: Props) {
     menuOpen(false);
   };
 
-  const handleDelete = () => {
-    console.log(selectedMovieOrders);
+  const handleDelete = async () => {
+    if (selectedMovieOrders.length === 0) {
+      update({
+        message: `Please select the movie to delete`,
+        severity: 'success',
+        open: true
+      });
+    } else {
+      const promises = selectedMovieOrders.map(
+        async (selectedMovie: string) => {
+          await deleteMovie({
+            id: selectedMovie
+          });
+        }
+      );
+
+      try {
+        const results = await Promise.all(promises);
+
+        if (results) {
+          queryClient.invalidateQueries([QUERY_KEYS.MOVIE_LIST]);
+
+          update({
+            message: `Delete Movies Successfully`,
+            severity: 'success',
+            open: true
+          });
+        } else {
+          update({
+            message: `Delete Movies Fail`,
+            severity: 'error',
+            open: true
+          });
+        }
+      } catch (error) {
+        update({
+          message: error.message,
+          severity: 'error',
+          open: true
+        });
+      }
+    }
   };
 
   return (
