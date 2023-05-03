@@ -172,29 +172,14 @@ export const CreateMovieForm = () => {
           />
         </Box>
         <Box>
-          <Stack direction="row" alignItems="center" sx={{ margin: 1 }}>
-            <label htmlFor="contained-button-file">
-              <Input
-                accept="image/*"
-                id="contained-button-file"
-                multiple
-                type="file"
-              />
-              <Button variant="contained" component="span">
-                Upload
-              </Button>
-            </label>
-            <label htmlFor="icon-button-file">
-              <Input accept="image/*" id="icon-button-file" type="file" />
-              <IconButton
-                color="primary"
-                aria-label="upload picture"
-                component="span"
-              >
-                <PhotoCamera />
-              </IconButton>
-            </label>
-          </Stack>
+          <TextField
+            required
+            id="outlined-required"
+            name="poster"
+            label="Poster"
+            defaultValue={values.poster}
+            onChange={handleChange('poster')}
+          />
         </Box>
         <Box>
           {actor && (

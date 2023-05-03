@@ -56,9 +56,7 @@ export const deleteActor = async (input: { id: string }) => {
 
     const response = await fetchDataAuth(
       `${API_BASE_URL}/api/collections/actors/records/${id}`,
-      'DELETE',
-      { id },
-      {}
+      'DELETE'
     );
 
     return response;
@@ -81,8 +79,8 @@ export const updateActor = async (input: {
 
     const response = await fetchDataAuth(
       `${API_BASE_URL}/api/collections/actors/records/${id}`,
-      'POST',
-      { id, name, avatar },
+      'PATCH',
+      { name, avatar },
       {}
     );
 
@@ -102,9 +100,7 @@ export const getActorData = async (input: { id: string }) => {
 
     const response = await fetchDataAuth(
       `${API_BASE_URL}/api/collections/actors/records/${id}`,
-      'POST',
-      { id },
-      {}
+      'GET'
     );
 
     return response;

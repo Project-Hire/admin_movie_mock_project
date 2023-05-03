@@ -61,9 +61,7 @@ export const deleteCategory = async (input: { id: string }) => {
 
     const response = await fetchDataAuth(
       `${API_BASE_URL}/api/collections/categories/records/${id}`,
-      'DELETE',
-      { id },
-      {}
+      'DELETE'
     );
 
     return response;
@@ -103,9 +101,7 @@ export const getCategoryData = async (input: { id: string }) => {
 
     const response = await fetchDataAuth(
       `${API_BASE_URL}/api/collections/categories/records/${id}`,
-      'GET',
-      { id },
-      {}
+      'GET'
     );
 
     return response;

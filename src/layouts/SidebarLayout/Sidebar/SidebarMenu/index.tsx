@@ -31,8 +31,18 @@ import ChromeReaderModeTwoToneIcon from '@mui/icons-material/ChromeReaderModeTwo
 import WorkspacePremiumTwoToneIcon from '@mui/icons-material/WorkspacePremiumTwoTone';
 import CameraFrontTwoToneIcon from '@mui/icons-material/CameraFrontTwoTone';
 import DisplaySettingsTwoToneIcon from '@mui/icons-material/DisplaySettingsTwoTone';
-import { ManagementList } from 'src/utils/menu';
-import { IManagementMenu } from 'src/models/menu';
+import {
+  ManagementList,
+  CreatePage,
+  DetailPage,
+  EditPage
+} from 'src/utils/menu';
+import {
+  IManagementMenu,
+  ICreateMenu,
+  IDetailMenu,
+  IEditMenu
+} from 'src/models/menu';
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -270,39 +280,73 @@ function SidebarMenu() {
         >
           <SubMenuWrapper>
             <List component="div">
-              <ListItem component="div">
-                <Button
-                  disableRipple
-                  component={RouterLink}
-                  onClick={closeSidebar}
-                  to="/create/category"
-                  startIcon={<DisplaySettingsTwoToneIcon />}
-                >
-                  Category
-                </Button>
-              </ListItem>
-              <ListItem component="div">
-                <Button
-                  disableRipple
-                  component={RouterLink}
-                  onClick={closeSidebar}
-                  to="/management/profile/details"
-                  startIcon={<AccountCircleTwoToneIcon />}
-                >
-                  User Profile
-                </Button>
-              </ListItem>
-              <ListItem component="div">
-                <Button
-                  disableRipple
-                  component={RouterLink}
-                  onClick={closeSidebar}
-                  to="/management/profile/settings"
-                  startIcon={<DisplaySettingsTwoToneIcon />}
-                >
-                  Account Settings
-                </Button>
-              </ListItem>
+              {CreatePage.map((item: ICreateMenu) => (
+                <ListItem component="div" key={item.id}>
+                  <Button
+                    disableRipple
+                    component={RouterLink}
+                    onClick={closeSidebar}
+                    to={item.link}
+                    startIcon={item.icon}
+                  >
+                    {item.content}
+                  </Button>
+                </ListItem>
+              ))}
+            </List>
+          </SubMenuWrapper>
+        </List>
+
+        <List
+          component="div"
+          subheader={
+            <ListSubheader component="div" disableSticky>
+              Detail Pages
+            </ListSubheader>
+          }
+        >
+          <SubMenuWrapper>
+            <List component="div">
+              {DetailPage.map((item: IDetailMenu) => (
+                <ListItem component="div" key={item.id}>
+                  <Button
+                    disableRipple
+                    component={RouterLink}
+                    onClick={closeSidebar}
+                    to={item.link}
+                    startIcon={item.icon}
+                  >
+                    {item.content}
+                  </Button>
+                </ListItem>
+              ))}
+            </List>
+          </SubMenuWrapper>
+        </List>
+
+        <List
+          component="div"
+          subheader={
+            <ListSubheader component="div" disableSticky>
+              Edit Pages
+            </ListSubheader>
+          }
+        >
+          <SubMenuWrapper>
+            <List component="div">
+              {EditPage.map((item: IEditMenu) => (
+                <ListItem component="div" key={item.id}>
+                  <Button
+                    disableRipple
+                    component={RouterLink}
+                    onClick={closeSidebar}
+                    to={item.link}
+                    startIcon={item.icon}
+                  >
+                    {item.content}
+                  </Button>
+                </ListItem>
+              ))}
             </List>
           </SubMenuWrapper>
         </List>

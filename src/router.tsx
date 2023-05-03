@@ -32,7 +32,7 @@ const Category = Loader(
   lazy(() => import('src/content/applications/Category'))
 );
 const Actor = Loader(lazy(() => import('src/content/applications/Actor')));
-
+// Create Pages
 const CreateCategoryPage = Loader(
   lazy(() => import('src/content/create/CreateCategory'))
 );
@@ -42,7 +42,7 @@ const CreateActorPage = Loader(
 const CreateMoviePage = Loader(
   lazy(() => import('src/content/create/CreateMovie'))
 );
-
+// Detail Pages
 const DetailCategoryPage = Loader(
   lazy(() => import('src/content/detail/DetailCategory'))
 );
@@ -52,7 +52,7 @@ const DetailActorPage = Loader(
 const DetailMoviePage = Loader(
   lazy(() => import('src/content/detail/DetailMovie'))
 );
-
+// Edit Pages
 const EditCategoryPage = Loader(
   lazy(() => import('src/content/edit/EditCategory'))
 );

@@ -79,9 +79,7 @@ export const deleteMovie = async (input: { id: string }) => {
 
     const response = await fetchDataAuth(
       `${API_BASE_URL}/api/collections/movies/records/${id}`,
-      'DELETE',
-      { id },
-      {}
+      'DELETE'
     );
 
     return response;
@@ -108,8 +106,7 @@ export const updateMovie = async (input: {
     const response = await fetchDataAuth(
       `${API_BASE_URL}/api/collections/movies/records/${id}`,
       'PATCH',
-      { id, name, description, actor_id, poster, category_id },
-      {}
+      { name, description, actor_id, poster, category_id }
     );
 
     return response;
@@ -128,9 +125,7 @@ export const getMovieData = async (input: { id: string }) => {
 
     const response = await fetchDataAuth(
       `${API_BASE_URL}/api/collections/movies/records/${id}`,
-      'GET',
-      { id },
-      {}
+      'GET'
     );
 
     return response;
