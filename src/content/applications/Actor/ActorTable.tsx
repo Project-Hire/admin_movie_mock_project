@@ -104,7 +104,7 @@ const RecentOrdersTable: FC<IActorTableProps> = ({
 
   const handleDeleteActor = async (id: string) => {
     try {
-      await deleteActor({ id, accessToken: 'abc' });
+      await deleteActor({ id });
 
       queryClient.invalidateQueries([QUERY_KEYS.ACTOR_LIST]);
 

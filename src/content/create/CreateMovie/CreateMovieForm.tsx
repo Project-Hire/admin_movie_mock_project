@@ -111,8 +111,7 @@ export const CreateMovieForm = () => {
       e.preventDefault();
 
       const response = (await addMovie({
-        ...values,
-        accessToken: 'abc'
+        ...values
       })) as ICreateMovieDataResponse;
 
       if (response) {

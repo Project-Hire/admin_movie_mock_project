@@ -16,8 +16,7 @@ export const DetailCategory = () => {
     [QUERY_KEYS.CATEGORY_DETAIL, id],
     async () => {
       const response = await getCategoryData({
-        id,
-        accessToken: 'abc'
+        id
       });
 
       return response;
