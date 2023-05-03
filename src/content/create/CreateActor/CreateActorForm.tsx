@@ -12,8 +12,6 @@ import {
   IconButton
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
 import { IDataOpenAlert, useStatusAlert } from 'src/stores/useStatusAlert';
 import { addCategory } from 'src/utils/api/category';
 import { useQueryClient } from '@tanstack/react-query';
@@ -27,10 +25,6 @@ interface State {
   name: string;
   avatar: string;
 }
-
-const Input = styled('input')({
-  display: 'none'
-});
 
 export const CreateActorForm = () => {
   const navigate = useNavigate();

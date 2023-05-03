@@ -184,6 +184,7 @@ export const CreateMovieForm = () => {
         <Box>
           {actor && (
             <TextField
+              required
               label="Select actor"
               select
               SelectProps={{
@@ -204,6 +205,7 @@ export const CreateMovieForm = () => {
           ;
           {category && (
             <TextField
+              required
               label="Select category"
               select
               SelectProps={{
