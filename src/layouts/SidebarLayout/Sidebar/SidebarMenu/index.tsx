@@ -12,37 +12,8 @@ import {
 import { NavLink as RouterLink } from 'react-router-dom';
 import { SidebarContext } from 'src/contexts/SidebarContext';
 
-import DesignServicesTwoToneIcon from '@mui/icons-material/DesignServicesTwoTone';
-import BrightnessLowTwoToneIcon from '@mui/icons-material/BrightnessLowTwoTone';
-import MmsTwoToneIcon from '@mui/icons-material/MmsTwoTone';
-import TableChartTwoToneIcon from '@mui/icons-material/TableChartTwoTone';
-import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
-import BallotTwoToneIcon from '@mui/icons-material/BallotTwoTone';
-import BeachAccessTwoToneIcon from '@mui/icons-material/BeachAccessTwoTone';
-import EmojiEventsTwoToneIcon from '@mui/icons-material/EmojiEventsTwoTone';
-import FilterVintageTwoToneIcon from '@mui/icons-material/FilterVintageTwoTone';
-import HowToVoteTwoToneIcon from '@mui/icons-material/HowToVoteTwoTone';
-import LocalPharmacyTwoToneIcon from '@mui/icons-material/LocalPharmacyTwoTone';
-import RedeemTwoToneIcon from '@mui/icons-material/RedeemTwoTone';
-import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
-import TrafficTwoToneIcon from '@mui/icons-material/TrafficTwoTone';
-import CheckBoxTwoToneIcon from '@mui/icons-material/CheckBoxTwoTone';
-import ChromeReaderModeTwoToneIcon from '@mui/icons-material/ChromeReaderModeTwoTone';
-import WorkspacePremiumTwoToneIcon from '@mui/icons-material/WorkspacePremiumTwoTone';
-import CameraFrontTwoToneIcon from '@mui/icons-material/CameraFrontTwoTone';
-import DisplaySettingsTwoToneIcon from '@mui/icons-material/DisplaySettingsTwoTone';
-import {
-  ManagementList,
-  CreatePage,
-  DetailPage,
-  EditPage
-} from 'src/utils/menu';
-import {
-  IManagementMenu,
-  ICreateMenu,
-  IDetailMenu,
-  IEditMenu
-} from 'src/models/menu';
+import { ManagementList, CreatePage } from 'src/utils/menu';
+import { IManagementMenu, ICreateMenu } from 'src/models/menu';
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -229,60 +200,6 @@ function SidebarMenu() {
           <SubMenuWrapper>
             <List component="div">
               {CreatePage.map((item: ICreateMenu) => (
-                <ListItem component="div" key={item.id}>
-                  <Button
-                    disableRipple
-                    component={RouterLink}
-                    onClick={closeSidebar}
-                    to={item.link}
-                    startIcon={item.icon}
-                  >
-                    {item.content}
-                  </Button>
-                </ListItem>
-              ))}
-            </List>
-          </SubMenuWrapper>
-        </List>
-
-        <List
-          component="div"
-          subheader={
-            <ListSubheader component="div" disableSticky>
-              Detail Pages
-            </ListSubheader>
-          }
-        >
-          <SubMenuWrapper>
-            <List component="div">
-              {DetailPage.map((item: IDetailMenu) => (
-                <ListItem component="div" key={item.id}>
-                  <Button
-                    disableRipple
-                    component={RouterLink}
-                    onClick={closeSidebar}
-                    to={item.link}
-                    startIcon={item.icon}
-                  >
-                    {item.content}
-                  </Button>
-                </ListItem>
-              ))}
-            </List>
-          </SubMenuWrapper>
-        </List>
-
-        <List
-          component="div"
-          subheader={
-            <ListSubheader component="div" disableSticky>
-              Edit Pages
-            </ListSubheader>
-          }
-        >
-          <SubMenuWrapper>
-            <List component="div">
-              {EditPage.map((item: IEditMenu) => (
                 <ListItem component="div" key={item.id}>
                   <Button
                     disableRipple

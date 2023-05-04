@@ -23,6 +23,10 @@ import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
 import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
 import { pb } from 'src/utils/api/auth';
+import {
+  IDataLoginStatus,
+  useDataLoginInfo
+} from 'src/stores/useDataLoginInfo';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -60,6 +64,8 @@ const UserBoxDescription = styled(Typography)(
 );
 
 function HeaderUserbox() {
+  const [data] = useDataLoginInfo((state: IDataLoginStatus) => [state.data]);
+
   const navigate = useNavigate();
   const user = {
     name: 'Catherine Pike',
@@ -86,10 +92,10 @@ function HeaderUserbox() {
   return (
     <>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
-        <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+        <Avatar variant="rounded" alt={data.data.email} src={data.data.email} />
         <Hidden mdDown>
           <UserBoxText>
-            <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
+            <UserBoxLabel variant="body1">{data.data.email}</UserBoxLabel>
             <UserBoxDescription variant="body2">
               {user.jobtitle}
             </UserBoxDescription>
@@ -126,10 +132,6 @@ function HeaderUserbox() {
           <ListItem button to="/management/profile/details" component={NavLink}>
             <AccountBoxTwoToneIcon fontSize="small" />
             <ListItemText primary="My Profile" />
-          </ListItem>
-          <ListItem button to="/dashboards/messenger" component={NavLink}>
-            <InboxTwoToneIcon fontSize="small" />
-            <ListItemText primary="Messenger" />
           </ListItem>
           <ListItem
             button
