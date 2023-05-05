@@ -41,10 +41,14 @@ import { deleteMovie } from 'src/utils/api/movie';
 import { useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from 'src/models/key';
 import { useNavigate } from 'react-router';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
 
 interface IMovieTableProps {
   className?: string;
-  movieOrders: IMovieListData[];
+  movies: IMovieListDataResponse;
   page: number;
   limit: number;
   handlePageChange: (event: any, newPage: number) => void;
@@ -60,7 +64,7 @@ const applyMoviePagination = (
 };
 
 const RecentOrdersTable: FC<IMovieTableProps> = ({
-  movieOrders,
+  movies,
   page,
   limit,
   handleLimitChange,
@@ -78,7 +82,9 @@ const RecentOrdersTable: FC<IMovieTableProps> = ({
     event: ChangeEvent<HTMLInputElement>
   ): void => {
     setSelectedMovieOrders(
-      event.target.checked ? movieOrders.map((movieOrder) => movieOrder.id) : []
+      event.target.checked
+        ? movies.items.map((movieOrder) => movieOrder.id)
+        : []
     );
   };
 
@@ -123,13 +129,13 @@ const RecentOrdersTable: FC<IMovieTableProps> = ({
     }
   };
 
-  const paginatedMovieOrders = applyMoviePagination(movieOrders, page, limit);
+  const paginatedMovieOrders = applyMoviePagination(movies.items, page, limit);
 
   const selectedSomeMovieOrders =
     selectedMovieOrders.length > 0 &&
-    selectedMovieOrders.length < movieOrders.length;
+    selectedMovieOrders.length < movies.items.length;
   const selectedAllMovieOrders =
-    selectedMovieOrders.length === movieOrders.length;
+    selectedMovieOrders.length === movies.items.length;
   const theme = useTheme();
 
   return (
@@ -167,6 +173,7 @@ const RecentOrdersTable: FC<IMovieTableProps> = ({
               const isMovieOrderSelected = selectedMovieOrders.includes(
                 movieOrder.id
               );
+              console.log(movieOrder.poster);
               return (
                 <TableRow
                   hover
@@ -201,6 +208,7 @@ const RecentOrdersTable: FC<IMovieTableProps> = ({
                       color="text.primary"
                       gutterBottom
                       noWrap
+                      width={500}
                     >
                       {movieOrder.description}
                     </Typography>
@@ -217,7 +225,12 @@ const RecentOrdersTable: FC<IMovieTableProps> = ({
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <img title={movieOrder.name} src={movieOrder.poster} />
+                    <img
+                      title={movieOrder.name}
+                      width="100"
+                      height="100"
+                      src={`http://127.0.0.1:8090/api/files/${movieOrder.collectionId}/${movieOrder.id}/${movieOrder.poster}`}
+                    />
                   </TableCell>
                   <TableCell>
                     <Typography
@@ -238,7 +251,9 @@ const RecentOrdersTable: FC<IMovieTableProps> = ({
                       gutterBottom
                       noWrap
                     >
-                      {movieOrder.created}
+                      {dayjs(movieOrder.created)
+                        .utc()
+                        .format('HH:mm:ss YYYY, MMMM DD')}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -249,10 +264,12 @@ const RecentOrdersTable: FC<IMovieTableProps> = ({
                       gutterBottom
                       noWrap
                     >
-                      {movieOrder.updated}
+                      {dayjs(movieOrder.updated)
+                        .utc()
+                        .format('HH:mm:ss YYYY, MMMM DD')}
                     </Typography>
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="right" width={200}>
                     <Tooltip title="View Order" arrow>
                       <IconButton
                         sx={{
@@ -308,7 +325,7 @@ const RecentOrdersTable: FC<IMovieTableProps> = ({
       <Box p={2}>
         <TablePagination
           component="div"
-          count={5}
+          count={movies.totalItems}
           onPageChange={handlePageChange}
           onRowsPerPageChange={handleLimitChange}
           page={page}

@@ -4,7 +4,11 @@ import { Outlet, useNavigate } from 'react-router-dom';
 
 import Sidebar from './Sidebar';
 import Header from './Header';
-import { isLogin } from 'src/utils/api/auth';
+import { AUTH_TOKEN, USER_INFO, isLogin } from 'src/utils/api/auth';
+import {
+  IDataLoginStatus,
+  useDataLoginInfo
+} from 'src/stores/useDataLoginInfo';
 
 interface SidebarLayoutProps {
   children?: ReactNode;
@@ -14,9 +18,21 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
   const navigate = useNavigate();
   const theme = useTheme();
 
+  const [updateLoginData] = useDataLoginInfo((state: IDataLoginStatus) => [
+    state.updateLoginData
+  ]);
+
   useEffect(() => {
     if (!isLogin()) {
       navigate('/login');
+    } else {
+      const userInfo = JSON.parse(localStorage.getItem(USER_INFO));
+      const authToken = localStorage.getItem(AUTH_TOKEN);
+
+      updateLoginData({
+        data: userInfo,
+        token: authToken
+      });
     }
   }, []);
 

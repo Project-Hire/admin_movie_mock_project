@@ -10,7 +10,7 @@ function ApplicationsActor() {
   return (
     <>
       <Helmet>
-        <title>Category - Applications</title>
+        <title>Actor - Applications</title>
       </Helmet>
       <PageTitleWrapper>
         <PageHeader />

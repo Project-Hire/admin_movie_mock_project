@@ -46,7 +46,7 @@ function Actor() {
           limit={limit}
           handleLimitChange={handleLimitChange}
           handlePageChange={handlePageChange}
-          actorOrders={actor.items}
+          actor={actor}
         />
       )}
     </Card>

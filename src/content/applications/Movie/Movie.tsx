@@ -46,7 +46,7 @@ function Movie() {
           limit={limit}
           handleLimitChange={handleLimitChange}
           handlePageChange={handlePageChange}
-          movieOrders={movie.items}
+          movies={movie}
         />
       )}
     </Card>

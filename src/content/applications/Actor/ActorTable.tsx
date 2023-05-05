@@ -22,7 +22,8 @@ import {
   MenuItem,
   Typography,
   useTheme,
-  CardHeader
+  CardHeader,
+  TextField
 } from '@mui/material';
 
 import Label from 'src/components/Label';
@@ -40,10 +41,13 @@ import { deleteActor } from 'src/utils/api/actor';
 import { useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from 'src/models/key';
 import { useNavigate } from 'react-router';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 
+dayjs.extend(utc);
 interface IActorTableProps {
   className?: string;
-  actorOrders: IActorListData[];
+  actor: IActorListDataResponse;
   page: number;
   limit: number;
   handlePageChange: (event: any, newPage: number) => void;
@@ -59,7 +63,7 @@ const applyActorPagination = (
 };
 
 const RecentOrdersTable: FC<IActorTableProps> = ({
-  actorOrders,
+  actor,
   page,
   limit,
   handleLimitChange,
@@ -77,7 +81,7 @@ const RecentOrdersTable: FC<IActorTableProps> = ({
     event: ChangeEvent<HTMLInputElement>
   ): void => {
     setSelectedActorOrders(
-      event.target.checked ? actorOrders.map((actorOrder) => actorOrder.id) : []
+      event.target.checked ? actor.items.map((actorOrder) => actorOrder.id) : []
     );
   };
 
@@ -109,7 +113,7 @@ const RecentOrdersTable: FC<IActorTableProps> = ({
       queryClient.invalidateQueries([QUERY_KEYS.ACTOR_LIST]);
 
       update({
-        message: `Delete Actor Successfully`,
+        message: 'Delete Actor Successfully',
         severity: 'success',
         open: true
       });
@@ -122,13 +126,13 @@ const RecentOrdersTable: FC<IActorTableProps> = ({
     }
   };
 
-  const paginatedActorOrders = applyActorPagination(actorOrders, page, limit);
+  const paginatedActorOrders = applyActorPagination(actor.items, page, limit);
 
   const selectedSomeActorOrders =
     selectedActorOrders.length > 0 &&
-    selectedActorOrders.length < actorOrders.length;
+    selectedActorOrders.length < actor.items.length;
   const selectedAllActorOrders =
-    selectedActorOrders.length === actorOrders.length;
+    selectedActorOrders.length === actor.items.length;
   const theme = useTheme();
 
   return (
@@ -191,7 +195,12 @@ const RecentOrdersTable: FC<IActorTableProps> = ({
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <img title={ActorOrder.name} src={ActorOrder.avatar} />
+                    <img
+                      title={ActorOrder.name}
+                      width="100"
+                      height="100"
+                      src={`http://127.0.0.1:8090/api/files/${ActorOrder.collectionId}/${ActorOrder.id}/${ActorOrder.avatar}`}
+                    />
                   </TableCell>
                   <TableCell>
                     <Typography
@@ -201,7 +210,9 @@ const RecentOrdersTable: FC<IActorTableProps> = ({
                       gutterBottom
                       noWrap
                     >
-                      {ActorOrder.created}
+                      {dayjs(ActorOrder.created)
+                        .utc()
+                        .format('HH:mm:ss YYYY, MMMM DD')}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -212,7 +223,9 @@ const RecentOrdersTable: FC<IActorTableProps> = ({
                       gutterBottom
                       noWrap
                     >
-                      {ActorOrder.updated}
+                      {dayjs(ActorOrder.updated)
+                        .utc()
+                        .format('HH:mm:ss YYYY, MMMM DD')}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
@@ -271,7 +284,7 @@ const RecentOrdersTable: FC<IActorTableProps> = ({
       <Box p={2}>
         <TablePagination
           component="div"
-          count={5}
+          count={actor.totalItems}
           onPageChange={handlePageChange}
           onRowsPerPageChange={handleLimitChange}
           page={page}

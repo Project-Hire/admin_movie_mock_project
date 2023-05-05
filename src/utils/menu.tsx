@@ -1,4 +1,8 @@
 import TableChartTwoToneIcon from '@mui/icons-material/TableChartTwoTone';
+import CreateNewFolderTwoToneIcon from '@mui/icons-material/CreateNewFolderTwoTone';
+import PersonOutlineTwoToneIcon from '@mui/icons-material/PersonOutlineTwoTone';
+import MovieTwoToneIcon from '@mui/icons-material/MovieTwoTone';
+import ContentCopyTwoToneIcon from '@mui/icons-material/ContentCopyTwoTone';
 import {
   IManagementMenu,
   ICreateMenu,
@@ -11,19 +15,19 @@ export const ManagementList: IManagementMenu[] = [
     id: 1,
     content: 'Actor List',
     link: '/management/actor',
-    icon: <TableChartTwoToneIcon />
+    icon: <PersonOutlineTwoToneIcon />
   },
   {
     id: 2,
     content: 'Category List',
     link: '/management/category',
-    icon: <TableChartTwoToneIcon />
+    icon: <ContentCopyTwoToneIcon />
   },
   {
     id: 3,
     content: 'Movie List',
     link: '/management/movie',
-    icon: <TableChartTwoToneIcon />
+    icon: <MovieTwoToneIcon />
   }
 ];
 
@@ -32,19 +36,19 @@ export const CreatePage: ICreateMenu[] = [
     id: 1,
     content: 'Create Actor Infor',
     link: '/create/actor',
-    icon: <TableChartTwoToneIcon />
+    icon: <CreateNewFolderTwoToneIcon />
   },
   {
     id: 2,
     content: 'Create Category Infor',
     link: '/create/category',
-    icon: <TableChartTwoToneIcon />
+    icon: <CreateNewFolderTwoToneIcon />
   },
   {
     id: 3,
     content: 'Create Movie Infor',
     link: '/create/movie',
-    icon: <TableChartTwoToneIcon />
+    icon: <CreateNewFolderTwoToneIcon />
   }
 ];
 

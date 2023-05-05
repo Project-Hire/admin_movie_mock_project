@@ -25,6 +25,10 @@ import { IDataOpenAlert, useStatusAlert } from 'src/stores/useStatusAlert';
 import { ChangeEvent, MouseEvent, useState } from 'react';
 import { AUTH_TOKEN, USER_INFO, pb } from 'src/utils/api/auth';
 import { IAuthDataResponse } from 'src/models/api/auth.interface';
+import {
+  IDataLoginStatus,
+  useDataLoginInfo
+} from 'src/stores/useDataLoginInfo';
 
 interface State {
   username: string;
@@ -46,6 +50,10 @@ const MainContent = styled(Box)(
 
 function LoginPage() {
   const [update] = useStatusAlert((state: IDataOpenAlert) => [state.update]);
+  const [updateLoginData] = useDataLoginInfo((state: IDataLoginStatus) => [
+    state.updateLoginData
+  ]);
+
   const navigate = useNavigate();
 
   // ** State
@@ -80,6 +88,11 @@ function LoginPage() {
       if (authData) {
         localStorage.setItem(USER_INFO, JSON.stringify(authData.admin));
         localStorage.setItem(AUTH_TOKEN, authData.token);
+
+        updateLoginData({
+          data: authData.admin,
+          token: authData.token
+        });
 
         navigate('/management/category');
 
