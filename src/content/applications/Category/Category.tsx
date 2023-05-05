@@ -46,7 +46,7 @@ function Category() {
           limit={limit}
           handleLimitChange={handleLimitChange}
           handlePageChange={handlePageChange}
-          categoryOrders={category.items}
+          categories={category}
         />
       )}
     </Card>

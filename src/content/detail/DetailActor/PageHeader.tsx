@@ -1,29 +1,31 @@
 import { Typography, Button, Grid } from '@mui/material';
 
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
+import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone';
+import { useNavigate } from 'react-router';
 
 function PageHeader() {
-  const user = {
-    name: 'Catherine Pike',
-    avatar: '/static/images/avatars/1.jpg'
+  const navigate = useNavigate();
+
+  const handleReturn = () => {
+    navigate('/management/actor');
   };
   return (
     <Grid container justifyContent="space-between" alignItems="center">
       <Grid item>
         <Typography variant="h3" component="h3" gutterBottom>
-          Transactions
+          View Detail Actor Page
         </Typography>
-        <Typography variant="subtitle2">
-          {user.name}, these are your recent transactions
-        </Typography>
+        <Typography variant="subtitle2"></Typography>
       </Grid>
       <Grid item>
         <Button
           sx={{ mt: { xs: 2, md: 0 } }}
           variant="contained"
-          startIcon={<AddTwoToneIcon fontSize="small" />}
+          startIcon={<ArrowBackTwoToneIcon fontSize="small" />}
+          onClick={handleReturn}
         >
-          Create transaction
+          View Actor List
         </Button>
       </Grid>
     </Grid>

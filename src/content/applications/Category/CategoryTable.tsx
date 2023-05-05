@@ -39,10 +39,13 @@ import { IDataOpenAlert, useStatusAlert } from 'src/stores/useStatusAlert';
 import { deleteCategory } from 'src/utils/api/category';
 import { useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from 'src/models/key';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 
+dayjs.extend(utc);
 interface ICategoryTableProps {
   className?: string;
-  categoryOrders: ICategoryListData[];
+  categories: ICategoryListDataResponse;
   page: number;
   limit: number;
   handlePageChange: (event: any, newPage: number) => void;
@@ -58,7 +61,7 @@ const applyCatePagination = (
 };
 
 const RecentOrdersTable: FC<ICategoryTableProps> = ({
-  categoryOrders,
+  categories,
   page,
   limit,
   handleLimitChange,
@@ -79,7 +82,7 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({
   ): void => {
     setSelectedCategoryOrders(
       event.target.checked
-        ? categoryOrders.map((categoryOrder) => categoryOrder.id)
+        ? categories.items.map((categoryOrder) => categoryOrder.id)
         : []
     );
   };
@@ -129,16 +132,16 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({
   };
 
   const paginatedCategoryOrders = applyCatePagination(
-    categoryOrders,
+    categories.items,
     page,
     limit
   );
 
   const selectedSomeCategoryOrders =
     selectedCategoryOrders.length > 0 &&
-    selectedCategoryOrders.length < categoryOrders.length;
+    selectedCategoryOrders.length < categories.items.length;
   const selectedAllCategoryOrders =
-    selectedCategoryOrders.length === categoryOrders.length;
+    selectedCategoryOrders.length === categories.items.length;
   const theme = useTheme();
 
   return (
@@ -207,7 +210,9 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({
                       gutterBottom
                       noWrap
                     >
-                      {categoryOrder.created}
+                      {dayjs(categoryOrder.created)
+                        .utc()
+                        .format('HH:mm:ss YYYY, MMMM DD')}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -218,7 +223,9 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({
                       gutterBottom
                       noWrap
                     >
-                      {categoryOrder.updated}
+                      {dayjs(categoryOrder.updated)
+                        .utc()
+                        .format('HH:mm:ss YYYY, MMMM DD')}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
@@ -277,7 +284,7 @@ const RecentOrdersTable: FC<ICategoryTableProps> = ({
       <Box p={2}>
         <TablePagination
           component="div"
-          count={5}
+          count={categories.totalItems}
           onPageChange={handlePageChange}
           onRowsPerPageChange={handleLimitChange}
           page={page}
