@@ -51,7 +51,7 @@ function Movie() {
 
   const debounceKeyword = (keyword: string) => {
     navigate({
-      pathname: '/book',
+      pathname: '/management/movie',
       search: `?page=${page}&limit=${limit}&keyword=${keyword}`
     });
     setKeyword(keyword);
@@ -69,7 +69,11 @@ function Movie() {
         padding={3}
         style={{ display: 'flex', alignItems: 'center' }}
       >
-        <TextField id="outlined-required" onChange={onChangeKeyword} />
+        <TextField
+          id="outlined-required"
+          onChange={onChangeKeyword}
+          defaultValue={keyword}
+        />
       </Box>
       {movie && (
         <MovieTable
