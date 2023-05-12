@@ -9,9 +9,12 @@ export const getActorList = async (input: {
   try {
     let startPage = input.page || 1;
     let startLimit = input.limit || 10;
+    let name = input.name ?? '';
 
     const response = await fetch(
-      `${API_BASE_URL}/api/collections/actors/records?page=${startPage}&limit=${startLimit}`,
+      `${API_BASE_URL}/api/collections/actors/records?page=${startPage}&limit=${startLimit}&${
+        name !== '' ? `filter=%28name~%27${name}%27%29` : ''
+      }`,
       {
         method: 'GET'
       }

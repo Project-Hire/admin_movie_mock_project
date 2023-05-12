@@ -58,18 +58,20 @@ export const DetailActor = () => {
           <ArrowBackTwoToneIcon />
         </IconButton>
       </Tooltip>
-      <Box>
-        <Typography variant="h3" component="h3" gutterBottom>
-          Profile for {actorDetail.name}
-        </Typography>
-        <img title={actorDetail.name} src={actorDetail.avatar} />
-        <Typography variant="subtitle2">
-          Create at {actorDetail.created}
-        </Typography>
-        <Typography variant="subtitle2">
-          Create at {actorDetail.updated}
-        </Typography>
-      </Box>
+      {actorDetail && (
+        <Box>
+          <Typography variant="h3" component="h3" gutterBottom>
+            Profile for {actorDetail.name}
+          </Typography>
+          <img title={actorDetail.name} src={actorDetail.avatar} />
+          <Typography variant="subtitle2">
+            Create at {actorDetail.created}
+          </Typography>
+          <Typography variant="subtitle2">
+            Create at {actorDetail.updated}
+          </Typography>
+        </Box>
+      )}
     </Box>
   );
 };

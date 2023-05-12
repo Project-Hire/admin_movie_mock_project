@@ -32,9 +32,9 @@ interface State {
   id: string;
   name: string;
   description: string;
-  actor_id: string;
+  actor: string;
   poster: string;
-  category_id: string;
+  category: string;
 }
 
 const Input = styled('input')({
@@ -48,8 +48,8 @@ export const EditMovieForm = () => {
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
   const [keyword, setKeyword] = useState<string>('');
-  const [categories, setCategories] = useState<string[]>([]);
-  const [actors, setActors] = useState<string[]>([]);
+  const [categories, setCategories] = useState<string>('');
+  const [actors, setActors] = useState<string>('');
 
   const { id } = useParams();
 
@@ -57,9 +57,9 @@ export const EditMovieForm = () => {
     id: id,
     name: '',
     description: '',
-    actor_id: '',
+    actor: '',
     poster: '',
-    category_id: ''
+    category: ''
   });
 
   const {
@@ -67,7 +67,7 @@ export const EditMovieForm = () => {
     isError,
     isFetching
   } = useQuery(
-    [QUERY_KEYS.ACTOR_DETAIL, id],
+    [QUERY_KEYS.MOVIE_DETAIL, id],
     async () => {
       const response = await getMovieData({
         id
@@ -125,14 +125,18 @@ export const EditMovieForm = () => {
       setValues({ ...values, [prop]: event.target.value });
     };
 
-  const handleCategoryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCategoryChange = (
+    event: { target: { value: string[] } } & ChangeEvent<HTMLInputElement>
+  ) => {
     const value = event.target.value;
-    setCategories(typeof value === 'string' ? value.split(',') : value);
+    setCategories(value.filter((cate: string) => cate !== '').join(','));
   };
 
-  const handleActorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleActorChange = (
+    event: { target: { value: string[] } } & ChangeEvent<HTMLInputElement>
+  ) => {
     const value = event.target.value;
-    setActors(typeof value === 'string' ? value.split(',') : value);
+    setActors(value.filter((actor: string) => actor !== '').join(','));
   };
 
   const onSubmit = async (e: { preventDefault: () => void }) => {
@@ -140,8 +144,11 @@ export const EditMovieForm = () => {
       e.preventDefault();
 
       const response = (await updateMovie({
-        ...values
+        ...values,
+        actor: actors,
+        category: categories
       })) as IEditMovieDataResponse;
+      console.log(response);
 
       if (response) {
         queryClient.invalidateQueries([QUERY_KEYS.MOVIE_LIST]);
@@ -169,96 +176,100 @@ export const EditMovieForm = () => {
 
   return (
     <Card>
-      <Box
-        component="form"
-        sx={{
-          '& .MuiTextField-root': { m: 1, width: '75ch' }
-        }}
-        noValidate
-        autoComplete="off"
-        padding={3}
-        style={{ alignItems: 'center' }}
-        onSubmit={onSubmit}
-      >
-        <Box>
-          <TextField
-            required
-            id="outlined-required"
-            name="name"
-            label="Name"
-            defaultValue={movieDetail.name}
-            onChange={handleChange('name')}
-          />
-        </Box>
-        <Box>
-          <TextField
-            required
-            id="outlined-required"
-            name="description"
-            label="Description"
-            defaultValue={movieDetail.description}
-            onChange={handleChange('description')}
-          />
-        </Box>
-        <Box>
-          <TextField
-            required
-            id="outlined-required"
-            name="poster"
-            label="Poster"
-            defaultValue={movieDetail.poster}
-            onChange={handleChange('poster')}
-          />
-        </Box>
-        <Box>
-          {actor && (
+      {movieDetail && (
+        <Box
+          component="form"
+          sx={{
+            '& .MuiTextField-root': { m: 1, width: '75ch' }
+          }}
+          noValidate
+          autoComplete="off"
+          padding={3}
+          style={{ alignItems: 'center' }}
+          onSubmit={onSubmit}
+        >
+          <Box>
             <TextField
-              label="Select actor"
-              select
-              SelectProps={{
-                multiple: true
-              }}
-              color="secondary"
-              helperText="Please select actor"
-              value={actors}
-              onChange={handleActorChange}
-            >
-              {actor.items.map((actor: IActorListData, index: number) => (
-                <MenuItem key={index} value={actor.id}>
-                  {actor.name}
-                </MenuItem>
-              ))}
-            </TextField>
-          )}
-          ;
-          {category && (
+              required
+              id="outlined-required"
+              name="name"
+              label="Name"
+              defaultValue={movieDetail.name}
+              onChange={handleChange('name')}
+            />
+          </Box>
+          <Box>
             <TextField
-              label="Select category"
-              select
-              SelectProps={{
-                multiple: true
-              }}
-              color="secondary"
-              helperText="Please select categories of movie"
-              value={categories}
-              onChange={handleCategoryChange}
-            >
-              {category.items.map(
-                (category: ICategoryListData, index: number) => (
-                  <MenuItem key={index} value={category.id}>
-                    {category.name}
+              required
+              id="outlined-required"
+              name="description"
+              label="Description"
+              defaultValue={movieDetail.description}
+              onChange={handleChange('description')}
+            />
+          </Box>
+          <Box>
+            <TextField
+              required
+              id="outlined-required"
+              name="poster"
+              label="Poster"
+              defaultValue={movieDetail.poster}
+              onChange={handleChange('poster')}
+            />
+          </Box>
+          <Box>
+            {actor && (
+              <TextField
+                label="Select actor"
+                select
+                SelectProps={{
+                  multiple: true
+                }}
+                color="secondary"
+                helperText="Please select actor"
+                value={actors.split(',')}
+                defaultValue={movieDetail.actors}
+                onChange={handleActorChange}
+              >
+                {actor.items.map((actor: IActorListData, index: number) => (
+                  <MenuItem key={index} value={actor.name}>
+                    {actor.name}
                   </MenuItem>
-                )
-              )}
-            </TextField>
-          )}
+                ))}
+              </TextField>
+            )}
+            ;
+            {category && (
+              <TextField
+                label="Select category"
+                select
+                SelectProps={{
+                  multiple: true
+                }}
+                color="secondary"
+                helperText="Please select categories of movie"
+                value={categories.split(',')}
+                defaultValue={movieDetail.categories}
+                onChange={handleCategoryChange}
+              >
+                {category.items.map(
+                  (category: ICategoryListData, index: number) => (
+                    <MenuItem key={index} value={category.name}>
+                      {category.name}
+                    </MenuItem>
+                  )
+                )}
+              </TextField>
+            )}
+          </Box>
+          <Box>
+            <Button sx={{ margin: 1 }} variant="contained" type="submit">
+              Save
+            </Button>
+          </Box>
         </Box>
-        <Box>
-          <Button sx={{ margin: 1 }} variant="contained" type="submit">
-            Save
-          </Button>
-        </Box>
-      </Box>
+      )}
     </Card>
   );
 };

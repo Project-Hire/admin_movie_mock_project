@@ -90,29 +90,31 @@ export const EditCategoryForm = () => {
 
   return (
     <Card>
-      <Box
-        component="form"
-        sx={{
-          '& .MuiTextField-root': { m: 1, width: '75ch' }
-        }}
-        noValidate
-        autoComplete="off"
-        padding={3}
-        style={{ display: 'flex', alignItems: 'center' }}
-        onSubmit={onSubmit}
-      >
-        <TextField
-          required
-          id="outlined-required"
-          name="name"
-          label="Name"
-          defaultValue={categoryDetail.name}
-          onChange={handleChange('name')}
-        />
-        <Button sx={{ margin: 1 }} variant="contained" type="submit">
-          Save
-        </Button>
-      </Box>
+      {categoryDetail && (
+        <Box
+          component="form"
+          sx={{
+            '& .MuiTextField-root': { m: 1, width: '75ch' }
+          }}
+          noValidate
+          autoComplete="off"
+          padding={3}
+          style={{ display: 'flex', alignItems: 'center' }}
+          onSubmit={onSubmit}
+        >
+          <TextField
+            required
+            id="outlined-required"
+            name="name"
+            label="Name"
+            defaultValue={categoryDetail.name}
+            onChange={handleChange('name')}
+          />
+          <Button sx={{ margin: 1 }} variant="contained" type="submit">
+            Save
+          </Button>
+        </Box>
+      )}
     </Card>
   );
 };

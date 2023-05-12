@@ -10,9 +10,12 @@ export const getMovieList = async (input: {
   try {
     let startPage = input.page || 1;
     let startLimit = input.limit || 10;
+    let name = input.name ?? '';
 
     const response = await fetch(
-      `${API_BASE_URL}/api/collections/movies/records?page=${startPage}&limit=${startLimit}`,
+      `${API_BASE_URL}/api/collections/movies/records?page=${startPage}&limit=${startLimit}&${
+        name !== '' ? `filter=%28name~%27${name}%27%29` : ''
+      }`,
       {
         method: 'GET'
       }
@@ -29,37 +32,37 @@ export const getMovieList = async (input: {
 export const addMovie = async (input: {
   name: string;
   description: string;
-  actor_id: string;
+  actor: string;
   poster: string;
-  category_id: string;
+  category: string;
 }) => {
   try {
-    const { name, description, actor_id, poster, category_id } = input;
+    const { name, description, actor, poster, category } = input;
 
     if (!name || name === '') {
       return { success: false, data: null, message: 'Invalid Name' };
     }
 
-    if (!actor_id) {
+    if (!actor) {
       return {
         success: false,
         data: null,
-        message: 'Please enter your Id actor'
+        message: 'Please enter actor'
       };
     }
 
-    if (!category_id) {
+    if (!category) {
       return {
         success: false,
         data: null,
-        message: 'Please enter your Id Category'
+        message: 'Please enter Category'
       };
     }
 
     const response = await fetchDataAuth(
       `${API_BASE_URL}/api/collections/movies/records`,
       'POST',
-      { name, description, actor_id, poster, category_id },
+      { name, description, actor, poster, category },
       {}
     );
 
@@ -92,12 +95,12 @@ export const updateMovie = async (input: {
   id: string;
   name: string;
   description: string;
-  actor_id: string;
+  actor: string;
   poster: string;
-  category_id: string;
+  category: string;
 }) => {
   try {
-    const { id, name, description, actor_id, poster, category_id } = input;
+    const { id, name, description, actor, poster, category } = input;
 
     if (!id || id === '') {
       return { success: false, data: null, message: 'Invalid Id' };
@@ -106,7 +109,7 @@ export const updateMovie = async (input: {
     const response = await fetchDataAuth(
       `${API_BASE_URL}/api/collections/movies/records/${id}`,
       'PATCH',
-      { name, description, actor_id, poster, category_id }
+      { name, description, actor, poster, category }
     );
 
     return response;

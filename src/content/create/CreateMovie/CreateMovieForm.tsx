@@ -30,9 +30,9 @@ import { ICreateMovieDataResponse } from 'src/models/api/movie.interface';
 interface State {
   name: string;
   description: string;
-  actor_id: string;
+  actor: string;
   poster: string;
-  category_id: string;
+  category: string;
 }
 
 const Input = styled('input')({
@@ -46,15 +46,15 @@ export const CreateMovieForm = () => {
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
   const [keyword, setKeyword] = useState<string>('');
-  const [categories, setCategories] = useState<string[]>([]);
-  const [actors, setActors] = useState<string[]>([]);
+  const [categories, setCategories] = useState<string>('');
+  const [actors, setActors] = useState<string>('');
 
   const [values, setValues] = useState<State>({
     name: '',
     description: '',
-    actor_id: '',
+    actor: '',
     poster: '',
-    category_id: ''
+    category: ''
   });
 
   const { data: category } = useQuery(
@@ -96,22 +96,31 @@ export const CreateMovieForm = () => {
       setValues({ ...values, [prop]: event.target.value });
     };
 
-  const handleCategoryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCategoryChange = (
+    event: { target: { value: string[] } } & ChangeEvent<HTMLInputElement>
+  ) => {
     const value = event.target.value;
-    setCategories(typeof value === 'string' ? value.split(',') : value);
+    setCategories(value.filter((cate: string) => cate !== '').join(','));
   };
 
-  const handleActorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  console.log(categories);
+
+  const handleActorChange = (
+    event: { target: { value: string[] } } & ChangeEvent<HTMLInputElement>
+  ) => {
     const value = event.target.value;
-    setActors(typeof value === 'string' ? value.split(',') : value);
+    setActors(value.filter((actor: string) => actor !== '').join(','));
   };
+  console.log(actors);
 
   const onSubmit = async (e: { preventDefault: () => void }) => {
     try {
       e.preventDefault();
 
       const response = (await addMovie({
-        ...values
+        ...values,
+        actor: actors,
+        category: categories
       })) as ICreateMovieDataResponse;
 
       if (response) {
@@ -192,17 +201,16 @@ export const CreateMovieForm = () => {
               }}
               color="secondary"
               helperText="Please select actor"
-              value={actors}
+              value={actors.split(',')}
               onChange={handleActorChange}
             >
               {actor.items.map((actor: IActorListData, index: number) => (
-                <MenuItem key={index} value={actor.id}>
+                <MenuItem key={index} value={actor.name}>
                   {actor.name}
                 </MenuItem>
               ))}
             </TextField>
           )}
-          ;
           {category && (
             <TextField
               required
@@ -213,12 +221,12 @@ export const CreateMovieForm = () => {
               }}
               color="secondary"
               helperText="Please select categories of movie"
-              value={categories}
+              value={categories.split(',')}
               onChange={handleCategoryChange}
             >
               {category.items.map(
                 (category: ICategoryListData, index: number) => (
-                  <MenuItem key={index} value={category.id}>
+                  <MenuItem key={index} value={category.name}>
                     {category.name}
                   </MenuItem>
                 )
