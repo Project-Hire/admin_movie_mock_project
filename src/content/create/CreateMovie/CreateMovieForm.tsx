@@ -33,6 +33,7 @@ interface State {
   actor: string;
   poster: string;
   category: string;
+  trailer: string;
 }
 
 const Input = styled('input')({
@@ -54,7 +55,8 @@ export const CreateMovieForm = () => {
     description: '',
     actor: '',
     poster: '',
-    category: ''
+    category: '',
+    trailer: ''
   });
 
   const { data: category } = useQuery(
@@ -188,6 +190,16 @@ export const CreateMovieForm = () => {
             label="Poster"
             defaultValue={values.poster}
             onChange={handleChange('poster')}
+          />
+        </Box>
+        <Box>
+          <TextField
+            required
+            id="outlined-required"
+            name="poster"
+            label="Poster"
+            defaultValue={values.trailer}
+            onChange={handleChange('trailer')}
           />
         </Box>
         <Box>

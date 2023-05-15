@@ -199,7 +199,7 @@ const RecentOrdersTable: FC<IActorTableProps> = ({
                       title={ActorOrder.name}
                       width="100"
                       height="100"
-                      src={`http://127.0.0.1:8090/api/files/${ActorOrder.collectionId}/${ActorOrder.id}/${ActorOrder.avatar}`}
+                      src={ActorOrder.avatar}
                     />
                   </TableCell>
                   <TableCell>
