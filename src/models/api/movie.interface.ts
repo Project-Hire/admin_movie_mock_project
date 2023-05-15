@@ -9,9 +9,9 @@ export interface IMovieListData {
   updated: string;
   name: string;
   description: string;
-  actor: IActorListData[];
+  actor: string;
   poster: string;
-  category: ICategoryListData[];
+  category: string;
 }
 export interface IMovieListDataResponse {
   page: number;
@@ -28,9 +28,9 @@ export interface ICreateMovieDataResponse {
   created: string;
   name: string;
   description: string;
-  actor: IActorListData[];
+  actor: string;
   poster: string;
-  category: ICategoryListData[];
+  category: string;
 }
 
 export interface IEditMovieDataResponse {
@@ -40,9 +40,9 @@ export interface IEditMovieDataResponse {
   created: string;
   name: string;
   description: string;
-  actor: IActorListData[];
+  actor: string;
   poster: string;
-  category: ICategoryListData[];
+  category: string;
 }
 
 export interface IMovieListDataResponseError {

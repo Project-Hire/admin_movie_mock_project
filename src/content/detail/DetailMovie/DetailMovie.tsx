@@ -58,27 +58,29 @@ export const DetailMovie = () => {
           <ArrowBackTwoToneIcon />
         </IconButton>
       </Tooltip>
-      <Box>
-        <Typography variant="h3" component="h3" gutterBottom>
-          Profile for {movieDetail.name}
-        </Typography>
-        <Typography variant="subtitle2">
-          Movie's description: {movieDetail.description}
-        </Typography>
-        <Typography variant="subtitle2">
-          Movie's actor: {movieDetail.actor}
-        </Typography>
-        <img title={movieDetail.name} src={movieDetail.poster} />
-        <Typography variant="subtitle2">
-          Movie's category: {movieDetail.category}
-        </Typography>
-        <Typography variant="subtitle2">
-          Create at {movieDetail.created}
-        </Typography>
-        <Typography variant="subtitle2">
-          Create at {movieDetail.updated}
-        </Typography>
-      </Box>
+      {movieDetail && (
+        <Box>
+          <Typography variant="h3" component="h3" gutterBottom>
+            Profile for {movieDetail.name}
+          </Typography>
+          <Typography variant="subtitle2">
+            Movie's description: {movieDetail.description}
+          </Typography>
+          <Typography variant="subtitle2">
+            Movie's actor: {movieDetail.actor}
+          </Typography>
+          <img title={movieDetail.name} src={movieDetail.poster} />
+          <Typography variant="subtitle2">
+            Movie's category: {movieDetail.category}
+          </Typography>
+          <Typography variant="subtitle2">
+            Create at {movieDetail.created}
+          </Typography>
+          <Typography variant="subtitle2">
+            Create at {movieDetail.updated}
+          </Typography>
+        </Box>
+      )}
     </Box>
   );
 };

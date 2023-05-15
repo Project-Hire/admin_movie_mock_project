@@ -229,7 +229,7 @@ const RecentOrdersTable: FC<IMovieTableProps> = ({
                       title={movieOrder.name}
                       width="100"
                       height="100"
-                      src={`http://127.0.0.1:8090/api/files/${movieOrder.collectionId}/${movieOrder.id}/${movieOrder.poster}`}
+                      src={movieOrder.poster}
                     />
                   </TableCell>
                   <TableCell>

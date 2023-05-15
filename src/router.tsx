@@ -15,18 +15,6 @@ const Loader = (Component) => (props) =>
   );
 
 // Pages
-
-const Overview = Loader(lazy(() => import('src/content/overview')));
-
-// Dashboards
-
-const Crypto = Loader(lazy(() => import('src/content/dashboards/Crypto')));
-
-// Applications
-
-const Messenger = Loader(
-  lazy(() => import('src/content/applications/Messenger'))
-);
 const Movie = Loader(lazy(() => import('src/content/applications/Movie')));
 const Category = Loader(
   lazy(() => import('src/content/applications/Category'))
@@ -63,9 +51,6 @@ const LoginPage = Loader(lazy(() => import('src/content/pages/Auth/Login')));
 
 // Components
 
-const Buttons = Loader(
-  lazy(() => import('src/content/pages/Components/Buttons'))
-);
 const Modals = Loader(
   lazy(() => import('src/content/pages/Components/Modals'))
 );
@@ -145,24 +130,6 @@ const routes: RouteObject[] = [
       {
         path: '*',
         element: <Status404 />
-      }
-    ]
-  },
-  {
-    path: 'dashboards',
-    element: <SidebarLayout />,
-    children: [
-      {
-        path: '',
-        element: <Navigate to="crypto" replace />
-      },
-      {
-        path: 'crypto',
-        element: <Crypto />
-      },
-      {
-        path: 'messenger',
-        element: <Messenger />
       }
     ]
   },
@@ -258,14 +225,6 @@ const routes: RouteObject[] = [
     path: '/components',
     element: <SidebarLayout />,
     children: [
-      {
-        path: '',
-        element: <Navigate to="buttons" replace />
-      },
-      {
-        path: 'buttons',
-        element: <Buttons />
-      },
       {
         path: 'modals',
         element: <Modals />

@@ -106,43 +106,45 @@ export const EditActorForm = () => {
 
   return (
     <Card>
-      <Box
-        component="form"
-        sx={{
-          '& .MuiTextField-root': { m: 1, width: '25ch' }
-        }}
-        noValidate
-        autoComplete="off"
-        padding={3}
-        style={{ alignItems: 'center' }}
-        onSubmit={onSubmit}
-      >
-        <Box>
-          <TextField
-            required
-            id="outlined-required"
-            name="name"
-            label="Name"
-            defaultValue={actorDetail.name}
-            onChange={handleChange('name')}
-          />
+      {actorDetail && (
+        <Box
+          component="form"
+          sx={{
+            '& .MuiTextField-root': { m: 1, width: '25ch' }
+          }}
+          noValidate
+          autoComplete="off"
+          padding={3}
+          style={{ alignItems: 'center' }}
+          onSubmit={onSubmit}
+        >
+          <Box>
+            <TextField
+              required
+              id="outlined-required"
+              name="name"
+              label="Name"
+              defaultValue={actorDetail.name}
+              onChange={handleChange('name')}
+            />
+          </Box>
+          <Box>
+            <TextField
+              required
+              id="outlined-required"
+              name="avatar"
+              label="Avatar"
+              defaultValue={actorDetail.avatar}
+              onChange={handleChange('avatar')}
+            />
+          </Box>
+          <Box>
+            <Button sx={{ margin: 1 }} variant="contained" type="submit">
+              Save
+            </Button>
+          </Box>
         </Box>
-        <Box>
-          <TextField
-            required
-            id="outlined-required"
-            name="avatar"
-            label="Avatar"
-            defaultValue={actorDetail.avatar}
-            onChange={handleChange('avatar')}
-          />
-        </Box>
-        <Box>
-          <Button sx={{ margin: 1 }} variant="contained" type="submit">
-            Save
-          </Button>
-        </Box>
-      </Box>
+      )}
     </Card>
   );
 };
