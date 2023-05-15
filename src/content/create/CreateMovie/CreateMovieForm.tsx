@@ -105,8 +105,6 @@ export const CreateMovieForm = () => {
     setCategories(value.filter((cate: string) => cate !== '').join(','));
   };
 
-  console.log(categories);
-
   const handleActorChange = (
     event: { target: { value: string[] } } & ChangeEvent<HTMLInputElement>
   ) => {

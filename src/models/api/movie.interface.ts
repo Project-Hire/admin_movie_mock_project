@@ -27,6 +27,7 @@ export interface ICreateMovieDataResponse {
   collectionId: string;
   collectionName: string;
   created: string;
+  updated: string;
   name: string;
   description: string;
   actor: string;
@@ -41,6 +42,7 @@ export interface IEditMovieDataResponse {
   collectionName: string;
   created: string;
   name: string;
+  updated: string;
   description: string;
   actor: string;
   poster: string;
