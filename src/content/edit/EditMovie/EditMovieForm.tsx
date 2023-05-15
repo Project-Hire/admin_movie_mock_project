@@ -35,6 +35,7 @@ interface State {
   actor: string;
   poster: string;
   category: string;
+  trailer: string;
 }
 
 const Input = styled('input')({
@@ -59,7 +60,8 @@ export const EditMovieForm = () => {
     description: '',
     actor: '',
     poster: '',
-    category: ''
+    category: '',
+    trailer: ''
   });
 
   const {
@@ -215,6 +217,16 @@ export const EditMovieForm = () => {
               name="poster"
               label="Poster"
               defaultValue={movieDetail.poster}
+              onChange={handleChange('poster')}
+            />
+          </Box>
+          <Box>
+            <TextField
+              required
+              id="outlined-required"
+              name="poster"
+              label="Poster"
+              defaultValue={movieDetail.trailer}
               onChange={handleChange('poster')}
             />
           </Box>

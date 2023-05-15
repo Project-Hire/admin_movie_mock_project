@@ -162,6 +162,7 @@ const RecentOrdersTable: FC<IMovieTableProps> = ({
               <TableCell>Movie Description</TableCell>
               <TableCell>Actor</TableCell>
               <TableCell>Movie Poster</TableCell>
+              <TableCell>Movie Trailer</TableCell>
               <TableCell>Category</TableCell>
               <TableCell>Create At</TableCell>
               <TableCell>Update At</TableCell>
@@ -231,6 +232,17 @@ const RecentOrdersTable: FC<IMovieTableProps> = ({
                       height="100"
                       src={movieOrder.poster}
                     />
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {movieOrder.trailer}
+                    </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography

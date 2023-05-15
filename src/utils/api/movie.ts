@@ -35,9 +35,10 @@ export const addMovie = async (input: {
   actor: string;
   poster: string;
   category: string;
+  trailer: string;
 }) => {
   try {
-    const { name, description, actor, poster, category } = input;
+    const { name, description, actor, poster, category, trailer } = input;
 
     if (!name || name === '') {
       return { success: false, data: null, message: 'Invalid Name' };
@@ -62,7 +63,7 @@ export const addMovie = async (input: {
     const response = await fetchDataAuth(
       `${API_BASE_URL}/api/collections/movies/records`,
       'POST',
-      { name, description, actor, poster, category },
+      { name, description, actor, poster, category, trailer },
       {}
     );
 
@@ -98,9 +99,10 @@ export const updateMovie = async (input: {
   actor: string;
   poster: string;
   category: string;
+  trailer: string;
 }) => {
   try {
-    const { id, name, description, actor, poster, category } = input;
+    const { id, name, description, actor, poster, category, trailer } = input;
 
     if (!id || id === '') {
       return { success: false, data: null, message: 'Invalid Id' };
