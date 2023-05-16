@@ -14,12 +14,15 @@ import {
 import { styled } from '@mui/material/styles';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { IDataOpenAlert, useStatusAlert } from 'src/stores/useStatusAlert';
-import { addCategory } from 'src/utils/api/category';
+import { addCategory, updateCategory } from 'src/utils/api/category';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from 'src/models/key';
 import { Navigate, useNavigate, useParams } from 'react-router';
-import { ICreateCategoryDataResponse } from 'src/models/api/category.interface';
-import { getActorData } from 'src/utils/api/actor';
+import {
+  ICreateCategoryDataResponse,
+  IEditCategoryDataResponse
+} from 'src/models/api/category.interface';
+import { getActorData, updateActor } from 'src/utils/api/actor';
 
 interface State {
   id: string;
@@ -76,9 +79,11 @@ export const EditActorForm = () => {
     try {
       e.preventDefault();
 
-      const response = (await addCategory({
+      const response = (await updateActor({
         ...values
-      })) as ICreateCategoryDataResponse;
+      })) as IEditCategoryDataResponse;
+
+      console.log(response);
 
       if (response) {
         queryClient.invalidateQueries([QUERY_KEYS.CATEGORY_LIST]);
