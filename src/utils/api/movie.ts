@@ -99,10 +99,10 @@ export const updateMovie = async (input: {
   actor: string;
   poster: string;
   category: string;
-  trailer: string;
+  video: string;
 }) => {
   try {
-    const { id, name, description, actor, poster, category, trailer } = input;
+    const { id, name, description, actor, poster, category, video } = input;
 
     if (!id || id === '') {
       return { success: false, data: null, message: 'Invalid Id' };
@@ -111,7 +111,7 @@ export const updateMovie = async (input: {
     const response = await fetchDataAuth(
       `${API_BASE_URL}/api/collections/movies/records/${id}`,
       'PATCH',
-      { name, description, actor, poster, category }
+      { name, description, actor, poster, category, video }
     );
 
     return response;

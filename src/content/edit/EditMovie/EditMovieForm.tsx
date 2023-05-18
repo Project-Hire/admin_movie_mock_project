@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import {
   Card,
   Box,
@@ -32,10 +32,10 @@ interface State {
   id: string;
   name: string;
   description: string;
+  video: string;
   actor: string;
   poster: string;
   category: string;
-  trailer: string;
 }
 
 const Input = styled('input')({
@@ -61,7 +61,7 @@ export const EditMovieForm = () => {
     actor: '',
     poster: '',
     category: '',
-    trailer: ''
+    video: ''
   });
 
   const {
@@ -121,6 +121,20 @@ export const EditMovieForm = () => {
       refetchOnWindowFocus: false
     }
   );
+
+  useEffect(() => {
+    if (movieDetail) {
+      setValues({
+        ...values,
+        name: movieDetail.name,
+        description: movieDetail.description,
+        actor: movieDetail.actor,
+        poster: movieDetail.poster,
+        category: movieDetail.category,
+        video: movieDetail.video
+      });
+    }
+  }, [movieDetail]);
 
   const handleChange =
     (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -226,8 +240,8 @@ export const EditMovieForm = () => {
               id="outlined-required"
               name="poster"
               label="Poster"
-              defaultValue={movieDetail.trailer}
-              onChange={handleChange('poster')}
+              defaultValue={movieDetail.video}
+              onChange={handleChange('video')}
             />
           </Box>
           <Box>
@@ -241,7 +255,7 @@ export const EditMovieForm = () => {
                 color="secondary"
                 helperText="Please select actor"
                 value={actors.split(',')}
-                defaultValue={movieDetail.actors}
+                defaultValue={movieDetail.actor.split(',')}
                 onChange={handleActorChange}
               >
                 {actor.items.map((actor: IActorListData, index: number) => (
@@ -262,7 +276,7 @@ export const EditMovieForm = () => {
                 color="secondary"
                 helperText="Please select categories of movie"
                 value={categories.split(',')}
-                defaultValue={movieDetail.categories}
+                defaultValue={movieDetail.category.split(',')}
                 onChange={handleCategoryChange}
               >
                 {category.items.map(

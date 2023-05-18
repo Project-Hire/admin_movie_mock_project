@@ -241,7 +241,7 @@ const RecentOrdersTable: FC<IMovieTableProps> = ({
                       gutterBottom
                       noWrap
                     >
-                      {movieOrder.trailer}
+                      {movieOrder.video}
                     </Typography>
                   </TableCell>
                   <TableCell>

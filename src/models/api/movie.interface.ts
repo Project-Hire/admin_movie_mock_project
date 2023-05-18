@@ -12,7 +12,7 @@ export interface IMovieListData {
   actor: string;
   poster: string;
   category: string;
-  trailer: string;
+  video: string;
 }
 export interface IMovieListDataResponse {
   page: number;
@@ -33,7 +33,7 @@ export interface ICreateMovieDataResponse {
   actor: string;
   poster: string;
   category: string;
-  trailer: string;
+  video: string;
 }
 
 export interface IEditMovieDataResponse {
@@ -47,7 +47,7 @@ export interface IEditMovieDataResponse {
   actor: string;
   poster: string;
   category: string;
-  trailer: string;
+  video: string;
 }
 
 export interface IMovieListDataResponseError {

@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { Card, Box, TextField, Button } from '@mui/material';
 import { IDataOpenAlert, useStatusAlert } from 'src/stores/useStatusAlert';
 import {
@@ -46,6 +46,15 @@ export const EditCategoryForm = () => {
       refetchOnWindowFocus: false
     }
   );
+
+  useEffect(() => {
+    if (categoryDetail) {
+      setValues({
+        ...values,
+        name: categoryDetail.name
+      });
+    }
+  }, [categoryDetail]);
 
   if (!isFetching && (isError || typeof categoryDetail === 'undefined')) {
     return <Navigate to={'/404'} replace />;
