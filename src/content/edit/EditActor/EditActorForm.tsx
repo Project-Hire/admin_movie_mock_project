@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import {
   Box,
   Typography,
@@ -69,6 +69,16 @@ export const EditActorForm = () => {
   if (!isFetching && (isError || typeof actorDetail === 'undefined')) {
     return <Navigate to={'/404'} replace />;
   }
+
+  useEffect(() => {
+    if (actorDetail) {
+      setValues({
+        ...values,
+        name: actorDetail.name,
+        avatar: actorDetail.avatar
+      });
+    }
+  }, [actorDetail]);
 
   const handleChange =
     (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
