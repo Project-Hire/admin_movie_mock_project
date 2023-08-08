@@ -9,7 +9,7 @@ function DetailActorPage() {
   return (
     <>
       <Helmet>
-        <title>Acator Details - Management</title>
+        <title>Actor Details - Management</title>
       </Helmet>
       <PageTitleWrapper>
         <PageHeader />

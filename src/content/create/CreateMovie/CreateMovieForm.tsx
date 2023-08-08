@@ -9,7 +9,6 @@ import {
   IconButton
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { IDataOpenAlert, useStatusAlert } from 'src/stores/useStatusAlert';
 import { getCategoryList } from 'src/utils/api/category';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -33,7 +32,7 @@ interface State {
   actor: string;
   poster: string;
   category: string;
-  trailer: string;
+  video: string;
 }
 
 const Input = styled('input')({
@@ -56,7 +55,7 @@ export const CreateMovieForm = () => {
     actor: '',
     poster: '',
     category: '',
-    trailer: ''
+    video: ''
   });
 
   const { data: category } = useQuery(
@@ -122,7 +121,7 @@ export const CreateMovieForm = () => {
         actor: actors,
         category: categories
       })) as ICreateMovieDataResponse;
-
+      console.log(response)
       if (response) {
         queryClient.invalidateQueries([QUERY_KEYS.MOVIE_LIST]);
         navigate('/management/movie');
@@ -194,10 +193,10 @@ export const CreateMovieForm = () => {
           <TextField
             required
             id="outlined-required"
-            name="poster"
-            label="Poster"
-            defaultValue={values.trailer}
-            onChange={handleChange('trailer')}
+            name="trailer"
+            label="Trailer"
+            defaultValue={values.video}
+            onChange={handleChange('video')}
           />
         </Box>
         <Box>
